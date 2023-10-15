@@ -1,0 +1,6 @@
+requests
+numpy 
+json
+pandas
+parquet
+```
