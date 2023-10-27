@@ -1,4 +1,7 @@
-datalakeminio_up:
-	docker compose -f service/minio_docker-compose.yml up -d
-datalakeminio_down:
-	docker compose -f service/minio_docker-compose.yml down
+datalake_up:
+	docker compose -f datalake/minio_docker-compose.yml up -d
+datalake_down:
+	docker compose -f datalake/minio_docker-compose.yml down
+airflow_up:
+	docker compose -f airflow/postgresql-docker-compose.yaml up -d
+	docker compose -f airflow/airflow-docker-compose.yaml up -d
