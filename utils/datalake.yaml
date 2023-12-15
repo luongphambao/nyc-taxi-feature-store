@@ -1,0 +1,10 @@
+nyc_data:
+  folder_path: data/final_data/
+  num_files: 36
+
+datalake:
+  endpoint: localhost:9000
+  bucket_name: taxi-time-series
+  folder_name: nyc_taxi
+  access_key: minio_access_key
+  secret_key: minio_secret_key
