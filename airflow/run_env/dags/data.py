@@ -38,6 +38,9 @@ with DAG(dag_id="nyc_taxi", start_date=datetime(2023, 7, 1), schedule=None) as d
             url_download=url_prefix+data_type1+"2020-"+month+".parquet"
             print(url_download)
             file_path=os.path.join(DATA_DIR,data_type1+"2020-"+month+".parquet")
+            if os.path.exists(file_path):
+                print("File already exists: "+file_path)
+                continue
             try:
                 r = requests.get(url_download, allow_redirects=True)
                 open(file_path, 'wb').write(r.content)
@@ -74,5 +77,19 @@ with DAG(dag_id="nyc_taxi", start_date=datetime(2023, 7, 1), schedule=None) as d
         #df_yellow=df_yellow.drop(columns=["airport_fee"])
         df_green.to_parquet(data_path1)
         #df_yellow.to_parquet(data_path2)
-
-    system_maintenance_task >>download_nyc_data_2020() >> merge_df() >> drop_not_use_column()
+    @task 
+    def drop_missing_column():
+        import pandas as pd
+        data_path1="/opt/airflow/data/green_tripdata_2020.parquet"
+        data_path2="/opt/airflow/data/yellow_tripdata_2020.parquet"
+        df_green=pd.read_parquet(data_path1)
+        df_yellow=pd.read_parquet(data_path2)
+        #check missing values
+        missing_green=df_green.isnull().sum()
+        missing_yellow=df_yellow.isnull().sum()
+        #drop missing values
+        df_green=df_green.dropna()
+        df_yellow=df_yellow.dropna()
+        df_green.to_parquet(data_path1)
+        #df_yellow.to_parquet(data_path2)
+    system_maintenance_task >>download_nyc_data_2020() >> merge_df() >> drop_not_use_column()>>drop_missing_column()
