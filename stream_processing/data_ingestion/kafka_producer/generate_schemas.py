@@ -7,17 +7,25 @@ import shutil
 import numpy as np
 import pandas as pd
 
+def type_to_avro_type(dtype):
+    if dtype =="int64":
+        return "int"
+    elif dtype =="float64":
+        return "float"
+    elif dtype =="object" or dtype =="datetime64[ns]":
+        return "string"
 def main(args):
     # Clean up the avro schema folder if exists
     if os.path.exists(args["schema_folder"]):
         shutil.rmtree(args["schema_folder"])
 
     os.mkdir(args["schema_folder"])
-    columns_list=["vendorid", "tpep_pickup_datetime", "tpep_dropoff_datetime", "passenger_count", "trip_distance", "ratecodeid", "store_and_fwd_flag", "pulocationid", "dolocationid", "payment_type", "fare_amount", "extra", "mta_tax", "tip_amount", "tolls_amount", "improvement_surcharge", "total_amount", "congestion_surcharge", "airport_fee"]
-    df_sample=pd.read_parquet("/home/baolp/mlops/module2/MLE2/data/2021/yellow_tripdata_2021-01.parquet")
+    columns_list=["vendorid", "tpep_pickup_datetime", "tpep_dropoff_datetime", "passenger_count", "trip_distance", "ratecodeid", "store_and_fwd_flag", "pulocationid", "dolocationid", "payment_type", "fare_amount", "extra", "mta_tax", "tip_amount", "tolls_amount", "improvement_surcharge", "total_amount", "congestion_surcharge"]
+    df_sample=pd.read_parquet("streamming_data.parquet")
     print(len(df_sample.columns))
     print(len(columns_list))
     type_list=[df_sample[col].dtype for col in df_sample.columns]
+    print(type_list)
     for schema_idx in range(args["num_schemas"]):
         # Initialize schema template
         schema = {
@@ -31,7 +39,9 @@ def main(args):
             "type": "record",
         }
         for feature_idx in range(len(columns_list)):
-            schema["fields"].append({"name": columns_list[feature_idx], "type": str(type_list[feature_idx])})
+            print(type_list[feature_idx])
+
+            schema["fields"].append({"name": columns_list[feature_idx], "type": type_to_avro_type(str(type_list[feature_idx]))})
             
         # Write this schema to the Avro output folder
         print(schema)

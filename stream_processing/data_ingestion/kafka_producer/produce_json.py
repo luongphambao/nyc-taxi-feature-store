@@ -3,11 +3,15 @@ import io
 import json
 from datetime import datetime
 from time import sleep
-
+import pandas as pd
 import numpy as np
 from bson import json_util
 from kafka import KafkaAdminClient, KafkaProducer
 from kafka.admin import NewTopic
+
+
+
+
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -33,7 +37,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 # Define some constants
-NUM_DEVICES = 1
+NUM_nyc_taxiS = 1
 
 
 def create_topic(admin, topic_name):
@@ -63,26 +67,34 @@ def create_streams(servers, schemas_path):
             )
             sleep(10)
             pass
-
+    df=pd.read_parquet("streamming_data.parquet")
+    #print(df.head())
     while True:
         record = {}
         # Make event one more year recent to simulate fresher data
         record["created"] = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        record["device_id"] = np.random.randint(low=0, high=NUM_DEVICES)
+        record["nyc_taxi_id"] = np.random.randint(low=0, high=NUM_nyc_taxiS)
 
         # Read columns from schema
-        schema_path = f"{schemas_path}/schema_{record['device_id']}.avsc"
+        schema_path = f"{schemas_path}/schema_{record['nyc_taxi_id']}.avsc"
         with open(schema_path, "r") as f:
             parsed_schema = json.loads(f.read())
-
+        value_sample=df.sample(1).values[0]
+        #print(value_sample)
+        index_feature=0
         for field in parsed_schema["fields"]:
-            if field["name"] not in ["created", "device_id"]:
-                record[field["name"]] = np.random.rand()
+            
+            #select value from random row
+            #value=df[field["name"]].sample(1).values[0]
 
-        # Get topic name for this device
-        topic_name = f'device_{record["device_id"]}'
+            if field["name"] not in ["created", "nyc_taxi_id"]:
+                record[field["name"]] = value_sample[index_feature]
+                index_feature+=1
+        #print(record)
+        # Get topic name for this nyc_taxi
+        topic_name = f'nyc_taxi_{record["nyc_taxi_id"]}'
 
-        # Create a new topic for this device id if not exists
+        # Create a new topic for this nyc_taxi id if not exists
         create_topic(admin, topic_name=topic_name)
 
         # Send messages to this topic
@@ -110,11 +122,11 @@ if __name__ == "__main__":
 
     # Tear down all previous streams
     print("Tearing down all existing topics!")
-    for device_id in range(NUM_DEVICES):
+    for nyc_taxi_id in range(NUM_nyc_taxiS):
         try:
-            teardown_stream(f"device_{device_id}", [servers])
+            teardown_stream(f"nyc_taxi_{nyc_taxi_id}", [servers])
         except Exception as e:
-            print(f"Topic device_{device_id} does not exist. Skipping...!")
+            print(f"Topic nyc_taxi_{nyc_taxi_id} does not exist. Skipping...!")
 
     if mode == "setup":
         schemas_path = parsed_args["schemas_path"]
