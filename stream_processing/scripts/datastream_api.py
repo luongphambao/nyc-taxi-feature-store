@@ -23,15 +23,16 @@ def merge_features(record):
     # Create a dictionary of all features
     # and create a data column for this
     data = {}
+    print(record)
     for key in record:
-        if key.startswith("feature"):
+        if key!="created" and key!="nyc_taxi_id":
             data[key] = record[key]
 
     # Convert the data column to string
     # and add other features back to record
     return json.dumps(
         {
-            "device_id": record["device_id"],
+            "nyc_taxi_id": record["nyc_taxi_id"],
             "created": record["created"],
             "data": data,
         }
@@ -79,8 +80,8 @@ def main():
     source = (
         KafkaSource.builder()
         .set_bootstrap_servers("localhost:9092")
-        .set_topics("device_0")
-        .set_group_id("device-consumer-group")
+        .set_topics("nyc_taxi_0")
+        .set_group_id("nyc_taxi-consumer-group")
         .set_starting_offsets(KafkaOffsetsInitializer.latest())
         .set_value_only_deserializer(SimpleStringSchema())
         .build()
@@ -92,7 +93,7 @@ def main():
         .set_bootstrap_servers("http://localhost:9092")
         .set_record_serializer(
             KafkaRecordSerializationSchema.builder()
-            .set_topic("sink_ds_device_0")
+            .set_topic("sink_ds_nyc_taxi_0")
             .set_value_serialization_schema(SimpleStringSchema())
             .build()
         )
