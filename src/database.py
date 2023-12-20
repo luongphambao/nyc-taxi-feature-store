@@ -14,12 +14,14 @@ def main():
     print(user,password,host,db_name)
     engine = create_engine('postgresql://'+user+':'+password+'@'+host+':5432/'+db_name)
     year=2021
-    for file in os.listdir("data/"+str(year)):
-        if file.startswith("yellow"):
-            print(file)
-            df=pd.read_parquet("data/"+str(year)+"/"+file)
-            print(pd.io.sql.get_schema(df, name='yellow_taxi_data', con=engine)) 
-            print(df.to_sql(name='yellow_taxi_data', con=engine, if_exists='append', index=False,chunksize=10000))
+    df=pd.read_csv("yellow_tripdata_2021-01.csv")
+    print(pd.io.sql.get_schema(df, name='yellow_taxi_data', con=engine))
+    # for file in os.listdir("data/"+str(year)):
+    #     if file.startswith("yellow"):
+    #         print(file)
+    #         df=pd.read_parquet("data/"+str(year)+"/"+file)
+    #         print(pd.io.sql.get_schema(df, name='yellow_taxi_data', con=engine)) 
+    #         print(df.to_sql(name='yellow_taxi_data', con=engine, if_exists='append', index=False,chunksize=10000))
     
     # #remove table if exists
     # engine.execute('DROP TABLE IF EXISTS yellow_taxi_data')

@@ -37,6 +37,10 @@ def main():
     print(df.show(4))
     columns = df.columns
     print(columns)
+    #Distribution of payment_type
+    print(df.groupBy("payment_type").count().show())
+    #Distribution of passenger_count
+    print(df.groupBy("passenger_count").count().show())
     #check missing values
 
 
