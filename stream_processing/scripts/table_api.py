@@ -25,18 +25,30 @@ t_env.get_config().set(
 
 # register Orders table and Result table sink in table environment
 source_ddl = f"""
-    CREATE TABLE device (
-        device_id INT,
+    CREATE TABLE nyctaxi (
+        nyc_taxi_id INT,
         created STRING,
-        feature_7 FLOAT,
-        feature_4 FLOAT,
-        feature_3 FLOAT,
-        feature_5 FLOAT,
-        feature_8 FLOAT,
-        feature_9 FLOAT
+        vendorid INT NOT NULL,
+        tpep_pickup_datetime TIMESTAMP NOT NULL,
+        tpep_dropoff_datetime TIMESTAMP NOT NULL,
+        passenger_count FLOAT,
+        trip_distance FLOAT,
+        ratecodeid FLOAT,
+        store_and_fwd_flag CHAR(1),
+        pulocationid INT,
+        dolocationID INT,
+        payment_type INT,
+        fare_amount FLOAT,
+        extra FLOAT,
+        mta_tax FLOAT,
+        tip_amount FLOAT,
+        tolls_amount FLOAT,
+        improvement_surcharge FLOAT,
+        total_amount FLOAT,
+        congestion_surcharge FLOAT
     ) WITH (
         'connector' = 'kafka',
-        'topic' = 'device_0',
+        'topic' = 'nyc_taxi_0',
         'properties.bootstrap.servers' = 'localhost:9092',
         'properties.group.id' = 'testGroup',
         'scan.startup.mode' = 'latest-offset',
@@ -46,13 +58,16 @@ source_ddl = f"""
 t_env.execute_sql(source_ddl)
 
 sink_ddl = f"""
-    CREATE TABLE sink_device (
-        device_id INT,
+    CREATE TABLE sink_nyctaxi (
+        nyc_taxi_id INT,
         created STRING,
-        feature_3 FLOAT
+        passenger_count FLOAT,
+        trip_distance FLOAT,    
+        payment_type INT,
+        total_amount FLOAT
     ) WITH (
         'connector' = 'kafka',
-        'topic' = 'sink_device_0',
+        'topic' = 'sink_nyctaxi_0',
         'properties.bootstrap.servers' = 'localhost:9092',
         'properties.group.id' = 'testGroup',
         'scan.startup.mode' = 'latest-offset',
@@ -62,8 +77,16 @@ sink_ddl = f"""
 t_env.execute_sql(sink_ddl)
 
 # specify table program
-devices = t_env.from_path("device")
+nyctaxi = t_env.from_path("nyctaxi")
+nyctaxi.select(
+    col("nyc_taxi_id"),
+    col("created"),
+    col("passenger_count"),
+    col("trip_distance"),
+    col("payment_type"),
+    col("total_amount"),
+).execute_insert("sink_nyctaxi").wait()
 
-devices.select(col("device_id"), col("created"), col("feature_3")).execute_insert(
-    "sink_device"
-).wait()
+# devices.select(col("device_id"), col("created"), col("feature_3")).execute_insert(
+#     "sink_device"
+# ).wait()

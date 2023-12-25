@@ -31,7 +31,7 @@ case $cmd in
         ;;
     generate_schemas)
         # Generate data for 1 device with number of features in the range from 2 to 10
-        python generate_schemas.py --min_features 2 --max_features 10 --num_schemas 1
+        python generate_schemas.py --num_schemas 1
         ;;
     *)
         echo -n "Unknown command: $cmd"
