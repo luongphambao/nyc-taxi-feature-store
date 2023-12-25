@@ -17,20 +17,24 @@ def main():
     
     create_table_query = """
         CREATE TABLE IF NOT EXISTS nyc_taxi (
-            VendorID INT,
-            tpep_pickup_datetime TIMESTAMP,
-            tpep_dropoff_datetime TIMESTAMP,
-            passenger_count FLOAT,
-            trip_distance FLOAT,
-            store_and_fwd_flag VARCHAR(5),
-            payment_type INT,
-            fare_amount FLOAT,
-            extra FLOAT,
-            mta_tax FLOAT,
-            tip_amount FLOAT,
-            tolls_amount FLOAT,
-            improvement_surcharge FLOAT,
-            total_amount FLOAT
+            vendorid  INT, 
+            tpep_pickup_datetime TIMESTAMP WITHOUT TIME ZONE, 
+            tpep_dropoff_datetime TIMESTAMP WITHOUT TIME ZONE, 
+            passenger_count FLOAT, 
+            trip_distance FLOAT, 
+            ratecodeid FLOAT, 
+            store_and_fwd_flag VARCHAR(1), 
+            pulocationid INT, 
+            dolocationid INT, 
+            payment_type INT, 
+            fare_amount FLOAT, 
+            extra FLOAT, 
+            mta_tax FLOAT, 
+            tip_amount FLOAT, 
+            tolls_amount FLOAT, 
+            improvement_surcharge FLOAT, 
+            total_amount FLOAT, 
+            congestion_surcharge FLOAT
         );
     """
     try:

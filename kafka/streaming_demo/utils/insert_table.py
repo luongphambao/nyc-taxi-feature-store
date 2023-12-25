@@ -9,7 +9,7 @@ from postgresql_client import PostgresSQLClient
 load_dotenv()
 
 TABLE_NAME = "nyc_taxi"
-NUM_ROWS = 1000
+NUM_ROWS = 10000
 
 
 def main():

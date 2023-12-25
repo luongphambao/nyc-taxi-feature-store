@@ -163,7 +163,7 @@ services:
       debezium:
         condition: service_healthy
     ports:
-      - '8080:8080'
+      - '8085:8080'
     environment:
       KAFKA_CONNECT_URIS: http://debezium:8083
 
