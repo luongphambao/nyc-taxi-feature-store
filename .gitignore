@@ -17,4 +17,5 @@ node_modules/
 .vscode/
 .idea/
 data/
-MLE2/airflow/run_env/dags/__pycache__
+airflow/run_env/dags/__pycache__
+.csv
