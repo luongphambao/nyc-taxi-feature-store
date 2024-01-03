@@ -29,6 +29,8 @@ monitoring_up:
 	docker compose -f monitoring/prom-graf-docker-compose.yaml up -d
 monitoring_down:
 	docker compose -f monitoring/prom-graf-docker-compose.yaml down
+monitoring__restart:
+	docker compose -f monitoring/prom-graf-docker-compose.yaml restart
 elk_up:
 	cd monitoring/elk  && docker compose -f elk-docker-compose.yml -f extensions/filebeat/filebeat-compose.yml up -d
 db_up:
