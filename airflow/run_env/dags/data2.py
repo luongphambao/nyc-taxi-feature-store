@@ -32,7 +32,6 @@ with DAG(dag_id="nyc_taxi_datawarehouse", start_date=datetime(2023, 7, 1), sched
         task_id="create_table_pg",
         postgres_conn_id=POSTGRES_CONN_ID,
         sql = """
-        DROP TABLE IF EXISTS nyc_taxi;
         CREATE TABLE IF NOT EXISTS nyc_taxi (
             vendorid  INT, 
             tpep_pickup_datetime TIMESTAMP WITHOUT TIME ZONE, 
@@ -61,5 +60,14 @@ with DAG(dag_id="nyc_taxi_datawarehouse", start_date=datetime(2023, 7, 1), sched
         python_callable=insert_table,
         #op_kwargs={"copy_sql": "COPY nyc_taxi FROM STDIN WITH CSV HEADER DELIMITER AS ','"},
     )
+    gx_validate_pg = GreatExpectationsOperator(
+        task_id="gx_validate_pg",
+        conn_id=POSTGRES_CONN_ID,
+        data_context_root_dir="include/great_expectations",
+        data_asset_name="public.nyc_taxi",
+        database="k6",
+        expectation_suite_name="nyctaxi_suite",
+        return_json_dict=True,
+    )
  
-create_table_pg
+create_table_pg>>insert_table_pg>>gx_validate_pg
