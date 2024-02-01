@@ -17,12 +17,8 @@ with DAG(dag_id="nyc_taxi", start_date=datetime(2023, 7, 1), schedule=None) as d
     )
 
     # https://airflow.apache.org/docs/apache-airflow/stable/howto/operator/python.html
-    @task.virtualenv(
-        task_id="download_nyc_data_2020",
-        requirements=["requests","pandas","numpy"],
-        system_site_packages=False,
-    )
-    def download_nyc_data():
+    @task
+    def download_nyc_data_yellow():
         import requests
         import os 
         import pandas as pd
@@ -30,7 +26,8 @@ with DAG(dag_id="nyc_taxi", start_date=datetime(2023, 7, 1), schedule=None) as d
 
         DATA_DIR = "/opt/airflow/data/"
         os.makedirs(DATA_DIR, exist_ok=True)
-        years=["2020","2021","2022"]
+        print(os.listdir(DATA_DIR))
+        years=["2021","2022"]
         months=["01","02","03","04","05","06","07","08","09","10","11","12"]
         data_type="yellow_tripdata_"
 
@@ -49,6 +46,36 @@ with DAG(dag_id="nyc_taxi", start_date=datetime(2023, 7, 1), schedule=None) as d
                 except:
                     print("Error in downloading file: "+url_download)
                     continue
+    @task.virtualenv
+    def download_nyc_data_green():
+        import requests
+        import os 
+        import pandas as pd
+        import numpy as np
+
+        DATA_DIR = "/opt/airflow/data/"
+        os.makedirs(DATA_DIR, exist_ok=True)
+        print(os.listdir(DATA_DIR))
+        years=["2021","2022"]
+        months=["01","02","03","04","05","06","07","08","09","10","11","12"]
+        data_type="green_tripdata_"
+
+        url_prefix = 'https://d37ci6vzurychx.cloudfront.net/trip-data/'
+        for year in years:
+            for month in months:
+                url_download=url_prefix+data_type+year+"-"+month+".parquet"
+                print(url_download)
+                file_path=os.path.join(DATA_DIR,data_type+year+"-"+month+".parquet")
+                if os.path.exists(file_path):
+                    print("File already exists: "+file_path)
+                    continue
+                try:
+                    r = requests.get(url_download, allow_redirects=True)
+                    open(file_path, 'wb').write(r.content)
+                except:
+                    print("Error in downloading file: "+url_download)
+                    continue
+
     @task 
     def drop_column():
         import pandas as pd
@@ -82,14 +109,25 @@ with DAG(dag_id="nyc_taxi", start_date=datetime(2023, 7, 1), schedule=None) as d
         import pandas as pd
         import os
         data_path="/opt/airflow/data/"
-        df_final=pd.DataFrame()
+        streamming_path=os.path.join(data_path,"stream")
+        os.makedirs(streamming_path, exist_ok=True)
+        df_green_list=[]
+        df_yellow_list=[]
         for file in os.listdir(data_path):
+            df=pd.read_parquet(os.path.join(data_path,file))
+            #get random 1000 rows
+            print(df.shape)
+            if df.shape[0]<1000:
+                continue
+            df=df.sample(n=1000)
+
             if file.endswith(".parquet"):
-                df=pd.read_parquet(os.path.join(data_path,file))
-                #select random 1000 rows
-                df=df.sample(n=1000)
-                df_final=df_final.append(df)
-                #print("Dropped missing data from file: "+file)
-        df_final.to_parquet(os.path.join(data_path,"streaming_data.parquet"))
-    system_maintenance_task >>download_nyc_data()>>drop_column()>>drop_mssing_data()
-    
+                if "green" in file:
+                    df_green_list.append(df)
+                else:
+                    df_yellow_list.append(df)
+        df_green=pd.concat(df_green_list)
+        df_yellow=pd.concat(df_yellow_list)
+        df_green.to_parquet(os.path.join(streamming_path,"green_stream.parquet"))
+        df_yellow.to_parquet(os.path.join(streamming_path,"yellow_stream.parquet"))
+    system_maintenance_task>>download_nyc_data_yellow()>>download_nyc_data_green()>>create_streamming_data()
