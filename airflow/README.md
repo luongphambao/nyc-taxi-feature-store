@@ -8,6 +8,7 @@ docker compose -f docker-compose.yaml up -d
 
 Try changing `expectations` in `strawberry_suite.json` located at the path `include/great_expectations/expectations/strawberry_suite.json` to see the magic behind `GreatExpectationsOperator`.
 
+Note: using commnad `ssudo chmod 777 -R airflow/run_env/data/` if error happen :))
 ## DAGs
 
 ```shell
@@ -16,7 +17,7 @@ Try changing `expectations` in `strawberry_suite.json` located at the path `incl
 ├── gx.py: DAG using GreatExpectationsOperator
 ├── lightgbm
 │   ├── build.sh
-│   ├── Dockerfile
+│   ├── DockerfileW
 │   ├── docker.py: DAG using DockerOperator
 │   ├── requirements.txt
 │   └── train.py

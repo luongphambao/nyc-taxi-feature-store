@@ -6,7 +6,6 @@ datalake_restart:
 	docker compose -f datalake/minio_docker-compose.yml down
 	docker compose -f datalake/minio_docker-compose.yml up -d
 airflow_up:
-	docker compose -f airflow/postgresql-docker-compose.yaml up -d
 	docker compose -f airflow/airflow-docker-compose.yaml up -d
 spark_up:
 	docker compose -f spark/docker-compose.yaml up -d

@@ -3,7 +3,10 @@ node_modules/
 
 # Ignore log files
 *.log
-
+# Ignore airflow
+airflow/data
+airflow/logs
+airflow/plugins
 # Ignore compiled binary files
 *.exe
 *.dll
