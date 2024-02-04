@@ -32,5 +32,5 @@ monitoring__restart:
 	docker compose -f monitoring/prom-graf-docker-compose.yaml restart
 elk_up:
 	cd monitoring/elk  && docker compose -f elk-docker-compose.yml -f extensions/filebeat/filebeat-compose.yml up -d
-db_up:
-	docker compose -f postgresql-docker-compose.yaml up -d
+warehouse_up:
+	docker compose -f datawarehouse/postgresql-docker-compose.yaml up -d
