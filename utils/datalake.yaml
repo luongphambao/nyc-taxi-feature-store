@@ -1,6 +1,6 @@
 nyc_data:
-  folder_path: data/final_data/
-  num_files: 36
+  folder_path: data/
+  num_files: 24
 
 datalake:
   endpoint: localhost:9000
