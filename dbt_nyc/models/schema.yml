@@ -1,0 +1,19 @@
+
+version: 2
+
+models:
+  - name: yellow_taxi
+    description: "Create a nyc taxi for EDA"
+    columns:
+      - name: vendorid
+        tests: # We have 2 other built-in tests: accepted_values and relationships
+          - not_null # Is is basically a macro: https://docs.getdbt.com/docs/build/tests#generic-tests
+      - name: passenger_count
+        tests: # We have 2 other built-in tests: accepted_values and relationships
+          - not_null # Is is basically a macro: https://docs.getdbt.com/docs/build/tests#generic-tests
+      - name: trip_distance
+        tests: # We have 2 other built-in tests: accepted_values and relationships
+          - not_null # Is is basically a macro: https://docs.getdbt.com/docs/build/tests#generic-tests
+      - name: total_amount
+        tests: # We have 2 other built-in tests: accepted_values and relationships
+          - not_null # Is is basically a macro: https://docs.getdbt.com/docs/build/tests#generic-tests

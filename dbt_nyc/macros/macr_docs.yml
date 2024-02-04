@@ -1,0 +1,20 @@
+version: 2
+
+macros:
+  - name: decode_payment
+    arguments:
+      - name: payment_type
+        type: column name
+        description: "The name of payment_type column which contain the abbreviation 1-6"
+
+  - name: decode_ratecode
+    arguments:
+      - name: ratecodeid
+        type: column name
+        description: "The name of ratecodeid column which contain the abbreviation 1-6"
+
+  - name: decode_vendor
+    arguments:
+      - name: vendorid
+        type: column name
+        description: "The name of vendor_id column which contain the abbreviation 1 and 2"
