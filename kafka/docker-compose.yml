@@ -186,6 +186,12 @@ services:
       - POSTGRES_PASSWORD=k6
     volumes: 
       - cdc_postgres_data:/var/lib/postgresql/data
-
+  nyc_taxi_producer:
+    image: luongphambao/nyc_producer:latest
+    depends_on:
+      - broker
+      - debezium
+      - debezium-ui
+    container_name: nyc-taxi-producer
 volumes:
   cdc_postgres_data:

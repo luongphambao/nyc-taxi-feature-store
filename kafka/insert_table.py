@@ -3,10 +3,7 @@ import random
 from datetime import datetime
 from time import sleep
 import pandas as pd 
-from dotenv import load_dotenv
 from postgresql_client import PostgresSQLClient
-
-load_dotenv()
 
 TABLE_NAME = "nyc_taxi"
 NUM_ROWS = 10000
@@ -14,13 +11,16 @@ NUM_ROWS = 10000
 
 def main():
     pc = PostgresSQLClient(
-        database=os.getenv("POSTGRES_DB"),
-        user=os.getenv("POSTGRES_USER"),
-        password=os.getenv("POSTGRES_PASSWORD"),
+        database="k6",
+        user="k6",
+        password="k6",
+        host="172.17.0.1"
     )
-    kafka=os.getenv("DATA_KAFKA")
-    kafka_df=pd.read_parquet(kafka)
-    print(kafka_df.head())
+
+    kafka_df=pd.read_parquet("yellow_stream.parquet")
+    #drop na
+    kafka_df=kafka_df.dropna()
+    #print(kafka_df.head())
     raw_columns = kafka_df.columns
     #remove column lower case
     kafka_df.columns=[col.lower() for col in raw_columns]
@@ -29,10 +29,12 @@ def main():
     try:
         columns = pc.get_columns(table_name=TABLE_NAME)
         print(columns)
+        print(len(columns))
     except Exception as e:
         print(f"Failed to get schema for table with error: {e}")
     #kafka_df=kafka_df[columns]
     # Loop over all columns and create random values
+
     for _ in range(NUM_ROWS):
         # Randomize values for feature columns
         row=kafka_df.sample()
@@ -59,16 +61,16 @@ def main():
         columns=list(columns)
         # columns.insert(0,"created")
         # columns.insert(1,"content")
-        print(data)
-        
-        print(columns)
+        # print(data)
+        # print(len(data))
+        # print(columns)
         #exit()
         query = f"""
             insert into {TABLE_NAME} ({",".join(columns)})
             values {tuple(data)}
         """
         pc.execute_query(query)
-        sleep(2)
+        sleep(1)
 
 
 if __name__ == "__main__":

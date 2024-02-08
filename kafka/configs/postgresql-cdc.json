@@ -8,7 +8,7 @@
       "database.password": "k6",
       "database.dbname" : "k6",
       "plugin.name": "pgoutput",
-      "database.server.name": "test",
+      "database.server.name": "nyc_taxi",
       "table.include.list": "public.nyc_taxi"
     }
 }

@@ -1,18 +1,23 @@
 import os
-
-from dotenv import load_dotenv
 from postgresql_client import PostgresSQLClient
 
-load_dotenv()
 
 
 def main():
+    print(os.getenv("POSTGRES_DB"))
+    # pc = PostgresSQLClient(
+    #     database=os.getenv("POSTGRES_DB"),
+    #     user=os.getenv("POSTGRES_USER"),
+    #     password=os.getenv("POSTGRES_PASSWORD"),
+    # )
     pc = PostgresSQLClient(
-        database=os.getenv("POSTGRES_DB"),
-        user=os.getenv("POSTGRES_USER"),
-        password=os.getenv("POSTGRES_PASSWORD"),
-    )
+        database="k6",
+        user="k6",
+        password="k6",
+        port="5432",
+        host="172.17.0.1"
 
+    )
     # Create devices table
     
     create_table_query = """
@@ -36,7 +41,8 @@ def main():
             tolls_amount FLOAT, 
             improvement_surcharge FLOAT, 
             total_amount FLOAT, 
-            congestion_surcharge FLOAT
+            congestion_surcharge FLOAT,
+            airport_fee FLOAT
         );
     """
     try:

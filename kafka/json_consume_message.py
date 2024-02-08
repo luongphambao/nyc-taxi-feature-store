@@ -8,7 +8,7 @@ def main():
         'auto.offset.reset': 'earliest' # try latest to get the recent value
     })
 
-    consumer.subscribe(['test.public.nyc_taxi'])
+    consumer.subscribe(['nyc_taxi.public.nyc_taxi'])
 
     # Read messages from Kafka
     try:
