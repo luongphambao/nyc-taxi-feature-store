@@ -32,8 +32,6 @@ class CustomTimestampAssigner(TimestampAssigner):
     def extract_timestamp(self, element, record_timestamp) -> int:
         element=json.loads(element)
         timestamp = int(element["payload"]["after"]["created"])
-        print("timestamp:", timestamp)
-        print("--------------------------------")
         return timestamp
 
 
@@ -42,19 +40,30 @@ class CountWindowProcessFunction(ProcessWindowFunction[tuple, tuple, str, TimeWi
                 key: str,
                 context: ProcessWindowFunction.Context[TimeWindow],
                 elements: Iterable[tuple]) -> Iterable[tuple]:
-        #print(key)
-        #print(elements)
-        print(len(elements))
-        print("------------------------------------------")
+        data_list = []
+        total_amounts = 0
+        passenger_counts = 0
+        trip_distances=0
         for e in elements:
             
             record = json.loads(e)
             data = record["payload"]["after"]
-            print(data)
+            #print(data)
+            total_amount = data["total_amount"]
+            total_amounts += total_amount
+            passenger_count = data["passenger_count"]
+            passenger_counts += passenger_count
+            trip_distance = data["trip_distance"]
+            trip_distances += trip_distance
         print("final window data",len(elements))
-        return str(len(elements))
-JARS_PATH = f"/home/baolp/mlops/module2/feature-store/jar-files/data_ingestion/kafka_connect/jars/"
+    
+        return [json.dumps({
+            "total_amount": total_amounts,
+            "passenger_count": passenger_counts,
+            "trip_distance": trip_distances
+        })]
 if __name__ == '__main__':
+    JARS_PATH = f"/home/luongphambao/module2/MLE2/jars"
     servers="localhost:9092"
     producer=KafkaProducer(bootstrap_servers=servers)
     admin_client = KafkaAdminClient(bootstrap_servers=servers)
@@ -71,13 +80,13 @@ if __name__ == '__main__':
         .set_bootstrap_servers("http://localhost:9092")
         .set_record_serializer(
             KafkaRecordSerializationSchema.builder()
-            .set_topic("nyc_taxi.sink_window_test")
+            .set_topic(topic_name)
             .set_value_serialization_schema(SimpleStringSchema())
             .build())
         .build()
     )
     kafka_consumer = FlinkKafkaConsumer(
-        topics="test.public.nyc_taxi",
+        topics="nyc_taxi.public.nyc_taxi",
         deserialization_schema=SimpleStringSchema(),
         properties={"bootstrap.servers": "localhost:9092", "group.id": "test_group"}
 

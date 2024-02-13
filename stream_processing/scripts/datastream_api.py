@@ -9,7 +9,7 @@ from pyflink.datastream.connectors.kafka import (
     KafkaOffsetsInitializer, KafkaRecordSerializationSchema, KafkaSink,
     KafkaSource)
 
-JARS_PATH = f"{os.getcwd()}/data_ingestion/kafka_connect/jars/"
+JARS_PATH = f"{os.getcwd()}/jars/"
 print(JARS_PATH)
 
 def merge_features(record):
@@ -23,52 +23,62 @@ def merge_features(record):
     # Create a dictionary of all features
     # and create a data column for this
     data = {}
-    print(record)
     for key in record:
-        if key!="created" and key!="nyc_taxi_id":
+        if key!="created" and key!="content":
             data[key] = record[key]
 
     # Convert the data column to string
     # and add other features back to record
     return json.dumps(
         {
-            "nyc_taxi_id": record["nyc_taxi_id"],
             "created": record["created"],
             "data": data,
         }
     )
 
-
-def filter_small_features(record):
+def print_features(record):
     """
-    Skip records containing a feature that is smaller than 0.5.
+    Merged feature columns into one single data column
+    and keep other columns unchanged.
     """
     # Convert Row to dict
     record = json.loads(record)
-    print("Found record: ", record)
-    # for key in record:
-    #     if key.startswith("feature"):
-    #         if record[key] < 0.5:
-    #             return False
+    data = record["payload"]["after"]
+    #print(data)
+    return json.dumps(data)
 
-    print("Found record: ", record)
+
+def check_record_keys(record):
+    """
+    Check messages have "payload" key or not
+    """
+    # Convert Row to dict
+    record = json.loads(record)
+    keys = list(record.keys())
+    if "payload" in keys:
+        return True
+
+    print("record: ", list(record.keys()))
     return True
 
+def filter_features(record):
+    """
+    Remove unnecessary columns
+    """
+    record = json.loads(record)
+    data = {}
+    for key in record:
+        if key != "created" and key != "content":
+            data[key] = record[key]
 
+    return json.dumps({"created": record["created"], "data": data})
 def main():
     env = StreamExecutionEnvironment.get_execution_environment()
 
     # The other commented lines are for Avro format
     env.add_jars(
         f"file://{JARS_PATH}/flink-connector-kafka-1.17.1.jar",
-        # f"file://{JARS_PATH}/flink-avro-1.17.1.jar",
-        # f"file://{JARS_PATH}/flink-avro-confluent-registry-1.17.1.jar",
-        # f"file://{JARS_PATH}/avro-1.11.1.jar",
-        # f"file://{JARS_PATH}/jackson-databind-2.14.2.jar",
-        # f"file://{JARS_PATH}/jackson-core-2.14.2.jar",
-        # f"file://{JARS_PATH}/jackson-annotations-2.14.2.jar",
         f"file://{JARS_PATH}/kafka-clients-3.4.0.jar",
-        # f"file://{JARS_PATH}/kafka-schema-registry-client-5.3.0.jar",
     )
 
     # Avro will need it for validation from the schema registry
@@ -80,7 +90,7 @@ def main():
     source = (
         KafkaSource.builder()
         .set_bootstrap_servers("localhost:9092")
-        .set_topics("nyc_taxi_0")
+        .set_topics("nyc_taxi.public.nyc_taxi")
         .set_group_id("nyc_taxi-consumer-group")
         .set_starting_offsets(KafkaOffsetsInitializer.latest())
         .set_value_only_deserializer(SimpleStringSchema())
@@ -93,7 +103,7 @@ def main():
         .set_bootstrap_servers("http://localhost:9092")
         .set_record_serializer(
             KafkaRecordSerializationSchema.builder()
-            .set_topic("sink_ds_nyc_taxi_0")
+            .set_topic("nyc_taxi.sink.datastream")
             .set_value_serialization_schema(SimpleStringSchema())
             .build()
         )
@@ -108,10 +118,12 @@ def main():
     # Add a sink to be more industrial, remember to cast to STRING in map
     # it will not work if you don't do it
     env.from_source(source, WatermarkStrategy.no_watermarks(), "Kafka Source").filter(
-        filter_small_features
-    ).map(merge_features, output_type=Types.STRING()).sink_to(sink=sink)
-    print("not error json ")
-    # Execute the job
+        check_record_keys
+    ).map(print_features, output_type=Types.STRING()).map(
+        filter_features, output_type=Types.STRING()
+    ).sink_to(
+        sink=sink
+    )
     env.execute("flink_datastream_demo1")
     print("Your job has been started successfully!")
 
