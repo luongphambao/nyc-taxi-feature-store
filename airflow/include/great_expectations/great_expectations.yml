@@ -20,7 +20,7 @@ datasources:
     execution_engine:
       class_name: SqlAlchemyExecutionEngine
       module_name: great_expectations.execution_engine
-      connection_string: postgresql+psycopg2://k6:k6@172.17.0.1:5433/k6?options=-csearch_path%3Dpublic
+      connection_string: postgresql+psycopg2://k6:k6@172.17.0.1:5432/k6?options=-csearch_path%3Dpublic
     data_connectors:
       default_configured_asset_sql_data_connector:
         class_name: ConfiguredAssetSqlDataConnector
