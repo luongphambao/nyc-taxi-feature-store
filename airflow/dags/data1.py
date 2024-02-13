@@ -46,7 +46,7 @@ with DAG(dag_id="nyc_taxi", start_date=datetime(2023, 7, 1), schedule=None) as d
                 except:
                     print("Error in downloading file: "+url_download)
                     continue
-    @task.virtualenv
+    @task
     def download_nyc_data_green():
         import requests
         import os 
@@ -104,7 +104,7 @@ with DAG(dag_id="nyc_taxi", start_date=datetime(2023, 7, 1), schedule=None) as d
                 df=df.dropna()
                 df.to_parquet(os.path.join(data_path,file))
                 print("Dropped missing data from file: "+file)
-    @task
+    @task 
     def create_streamming_data():
         import pandas as pd
         import os
