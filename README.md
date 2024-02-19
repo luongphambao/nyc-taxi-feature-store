@@ -1,7 +1,7 @@
 # MLE2
 ## Overall data architecture
 
-![](imgs/mle.drawio.png)
+![](imgs/datadrawio.drawio.png)
 
 ## Note:
 + **stream_processing** folder: contain pyflink scripts to process streaming data
