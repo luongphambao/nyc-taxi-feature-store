@@ -47,23 +47,6 @@ services:
       - 9090:9090
     networks:
       - monitoring
-
-  alertmanager:
-    image: prom/alertmanager:v0.25.0
-    container_name: alertmanager
-    restart: unless-stopped
-    volumes:
-      - alertmanager_data:/alertmanager/data
-      - ./alertmanager:/alertmanager
-    command:
-      - '--config.file=/alertmanager/config.yml'
-      - '--storage.path=/alertmanager/data'
-      - '--log.level=debug'
-    ports:
-      - 9093:9093
-    networks:
-      - monitoring
-
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:latest
     container_name: cadvisor
@@ -74,7 +57,7 @@ services:
       - /sys:/sys:ro
       - /var/lib/docker:/var/lib/docker:ro
     ports:
-      - 8090:8080
+      - 8095:8080
     networks:
       - monitoring
 
@@ -98,13 +81,3 @@ services:
       test: ["CMD-SHELL", "curl -f localhost:3000/api/health && echo 'ready'"]
       interval: 10s
       retries: 10
-
-  # jaeger:
-  #   image: jaegertracing/all-in-one:1.47
-  #   container_name: jaeger
-  #   restart: unless-stopped
-  #   ports:
-  #     - "6831:6831/udp"
-  #     - "16686:16686"
-  #   networks:
-  #     - monitoring
