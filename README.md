@@ -27,3 +27,29 @@
 + Docker engine
 ## How to guide 
 
+You can use list command in `Makefile` to run service
+
+For example: Run all service by command
+
+ ```bash
+    make run_all
+ ```
+
+ ### Airflow
+
+
+ You can see task in `airflow/dags` in  `data1.py` and `data2.py`
+
+ ```bash
+    make airflow_up
+ ```
+
+ Accesss at http://localhost:8080/ to for Airflow UI to run dag
+ ![](imgs/airflow.png)
+ You create connection `postgre_default` 
+ ![](imgs/airflow1.png)
+
+ data1: Download data ->Create streamming data -> Transform data
+
+ data2: Create Datawarehous->Insert data-> Check expectations
+
