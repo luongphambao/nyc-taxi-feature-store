@@ -30,4 +30,5 @@ run_all:
 	docker compose -f docker-compose.yml up -d
 	docker compose -f airflow-docker-compose.yaml up -d
 	docker compose -f monitoring/prom-graf-docker-compose.yaml up -d
+	cd monitoring/elk  && docker compose -f elk-docker-compose.yml -f extensions/filebeat/filebeat-compose.yml up -d
 
