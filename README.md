@@ -1,7 +1,7 @@
 # MLE2
 ## Overall data architecture
 
-![](imgs/mle2.drawio.png)
+![](imgs/mle.drawio.png)
 
 ## Note:
 + **stream_processing** folder: contain pyflink scripts to process streaming data
@@ -9,7 +9,6 @@
 + **airflow** folder: enviroment to run airflow service
 + **utils** folder: helper funtions
 + **This repo is implemented on nyc taxi data**
-![](images/gcs.png)
 ## 1. Installation
 + Tested on Python 3.9.12 (recommended to use a virtual environment such as Conda)
  ```bash
