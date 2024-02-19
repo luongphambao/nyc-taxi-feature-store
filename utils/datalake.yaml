@@ -1,7 +1,5 @@
 nyc_data:
   folder_path: data/
-  num_files: 24
-
 datalake:
   endpoint: localhost:9000
   bucket_name: taxi-time-series
