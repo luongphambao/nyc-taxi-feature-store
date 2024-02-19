@@ -16,7 +16,7 @@
     pip install -r requirements.txt
  ```
 
-+ Data: You can dowload and use this dataset in here: https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page. The format data i use in this Project is Parquet file
++ Data: You can dowload and use this dataset in here: https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page.The format data i use in this Project is Parquet file
 
 + Docker engine
 
