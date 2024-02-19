@@ -53,3 +53,25 @@ For example: Run all service by command
 
  data2: Create Datawarehous->Insert data-> Check expectations
 
+### 2.1. MinIO
++ MinIO is a datalake service
++ We can access MinIO console at port 9001
+![](images/minio.png)
+#### 2.1.1. Manual interaction
++ First, click to **Buckets**
+![](images/minio1.png)
++ Choose **Create Bucket**
+![](images/minio2.png)
++ Name the bucket and click to **Object Browser**
+![](images/minio3.png)
++ Choose bucket had created on the console
+![](images/minio4.png)
++ Click **Upload** to upload any files or folders
+![](images/minio5.png)
+#### 2.1.2. Automate interaction
++ Beside manual upload, we can use code to upload files or folder to MinIO
+#### How to guide
++ ```cd utils```
++ ```python export_data_to_datalake.py```
++ All files needed to upload to MinIO will be executed 
+![](images/minio6.png)
