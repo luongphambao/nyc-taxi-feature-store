@@ -5,7 +5,7 @@
 
 ## Overall data architecture
 
-![](imgs/mle2.drawio.png)
+![](imgs/datadrawio.drawio.png)
 
 
 ## Note:
