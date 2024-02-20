@@ -14,7 +14,7 @@
 + **airflow** folder: enviroment to run airflow service
 + **utils** folder: helper funtions
 + **This repo is implemented on nyc taxi data**
-![](images/gcs.png)
+![](imgs/gcs.png)
 ## 1. Installation
 + Tested on Python 3.9.12 (recommended to use a virtual environment such as Conda)
  ```bash
@@ -55,23 +55,22 @@ For example: Run all service by command
 
 ### 2.1. MinIO
 + MinIO is a datalake service
-+ We can access MinIO console at port 9001
-![](images/minio.png)
++ We can access MinIO console at port 9001 with user `minio_access_key` and password `minio_secret_key`
+![](imgs/minio.png)
 #### 2.1.1. Manual interaction
-+ First, click to **Buckets**
-![](images/minio1.png)
-+ Choose **Create Bucket**
-![](images/minio2.png)
-+ Name the bucket and click to **Object Browser**
-![](images/minio3.png)
-+ Choose bucket had created on the console
-![](images/minio4.png)
++ First, Select to **Buckets** and   choose **Create Bucket**
+![](imgs/minio1.png)
++ Name the bucket 
+![](imgs/minio2.png)
++ C lick to **Object Browser** and choose bucket had created on the console
+![](imgs/minio3.png)
 + Click **Upload** to upload any files or folders
-![](images/minio5.png)
+![](imgs/minio4.png)
+![](imgs/minio5.png)
 #### 2.1.2. Automate interaction
 + Beside manual upload, we can use code to upload files or folder to MinIO
 #### How to guide
-+ ```cd utils```
-+ ```python export_data_to_datalake.py```
++ You edit data_path and config in `utils/datalake.yaml`
++ ```python src/export_data_to_datalake.py```
 + All files needed to upload to MinIO will be executed 
-![](images/minio6.png)
+![](imgs/minio6.png)
