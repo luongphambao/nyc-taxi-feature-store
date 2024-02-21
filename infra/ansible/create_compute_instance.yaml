@@ -1,16 +1,16 @@
 - name: Create a Compute Engine instance
   hosts: localhost
   tasks:
-    - name: create a address
-      gcp_compute_address:
-        name: address-instance
-        region: us-central1
-        project: mle2-413315
-        auth_kind: serviceaccount
-        service_account_file: secrets/mle2-413315-848b93624e72.json
-        address: 104.197.140.39
-        state: absent
-      register: address
+    # - name: create a address
+    #   gcp_compute_address:
+    #     name: address-instance
+    #     region: us-central1
+    #     project: mle2-413315
+    #     auth_kind: serviceaccount
+    #     service_account_file: secrets/mle2-413315-848b93624e72.json
+    #     address: 104.197.140.39
+    #     state: absent
+    #   register: address
     - name: Start an instance
       gcp_compute_instance:
         name: instance-1

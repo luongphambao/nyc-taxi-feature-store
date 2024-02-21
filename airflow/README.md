@@ -25,3 +25,7 @@ Note: using commnad `ssudo chmod 777 -R airflow/run_env/data/` if error happen :
 └── sklearn.py: DAG using Python code running in a virtualenv
 
 ```
+```shell
+
+sudo chmod -R 777 airflow/
+```

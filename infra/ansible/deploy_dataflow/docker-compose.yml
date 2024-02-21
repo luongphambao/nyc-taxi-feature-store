@@ -1,6 +1,7 @@
 version: "3.9"
-#DATA STORAGE SERVICES
 services:
+  # Distributed query engine for various types
+  # of data sources
   trino:
     ports:
       - "8085:8080"
@@ -8,10 +9,13 @@ services:
     image: "trinodb/trino:410"
     hostname: trino
     volumes:
-      - ./datalake/trino/etc:/usr/lib/trino/etc:ro
-      - ./datalake/trino/catalog:/etc/trino/catalog
+      - ./trino/etc:/usr/lib/trino/etc:ro
+      - ./trino/catalog:/etc/trino/catalog
     depends_on:
       - hive-metastore
+
+  # We use PostgreSQL to store Hive metadata about
+  # how the datafile are mapped to schemas and tables
   metastore_db:
     container_name: datalake-metastore-db
     image: postgres:11
@@ -85,7 +89,7 @@ services:
       - POSTGRES_PASSWORD=k6
     volumes: 
       - dbt_postgresql_data:/var/lib/postgresql/data
-#STREAMMING SERVICES
+
   zookeeper:
     image: confluentinc/cp-zookeeper:7.5.0
     container_name: cdc-zookeeper
@@ -252,14 +256,20 @@ services:
     environment:
       KAFKA_CONNECT_URIS: http://debezium:8083
   
-  nyc_taxi_producer:
-    image: luongphambao/nyc_producer:latest
+  diabetes_producer:
+    image: dunghoang99/fake_diabetes_data:v1.0.0
     depends_on:
       - broker
       - debezium
       - debezium-ui
-    container_name: nyc-taxi-producer
+    container_name: flink-diabetes-producer
   
+  diabetes_service:
+    image: dunghoang99/diabete-prediction-api:latest
+    ports:
+      - '4001:4001'
+    container_name: diabetes-service-api
+
 volumes:
   minio_storage:
   dbt_postgresql_data:

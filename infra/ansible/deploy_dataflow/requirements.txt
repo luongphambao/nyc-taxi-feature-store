@@ -1,4 +1,5 @@
 pandas
+loguru
 minio
 PyYAML
 deltalake
@@ -9,6 +10,9 @@ sqlalchemy
 confluent-kafka
 python-dotenv
 apache-flink
+catboost
+fastapi
+joblib
 loguru
 uvicorn[standard]
 apache-airflow
