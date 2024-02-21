@@ -1,7 +1,7 @@
 # MLE2
 ## **Description**: 
 
-+In this repository, there is a constructed data pipeline featuring distinct flows tailored for batch and streaming data processing. Different services are utilized to meet the specific needs of each flow. Pyspark, PostgreSQL, Flink, Kafka, DBT, and Airflow are prominent among the services employed for these purposes. Moreover, monitoring tools like Prometheus, Grafana, and LogStash are integrated to ensure effective performance tracking.
++ In this repository, there is a constructed data pipeline featuring distinct flows tailored for batch and streaming data processing. Different services are utilized to meet the specific needs of each flow. Pyspark, PostgreSQL, Flink, Kafka, DBT, and Airflow are prominent among the services employed for these purposes. Moreover, monitoring tools like Prometheus, Grafana, and LogStash are integrated to ensure effective performance tracking.
 
 ## Overall data architecture
 
@@ -34,7 +34,10 @@ For example: Run all service by command
  ```bash
     make run_all
  ```
-
+ ### Moniotring 
+ Access at http://localhost:3000/ to for Grafana for tracking resource usage 
+  ![](imgs/grafana.png)
+  
  ### Airflow
 
 
@@ -72,5 +75,6 @@ For example: Run all service by command
 #### How to guide
 + You edit data_path and config in `utils/datalake.yaml`
 + ```python src/export_data_to_datalake.py```
-+ All files needed to upload to MinIO will be executed 
++ All files needed to upload to MinIO will be executed
++ If you want to test query datalake you can create view ... 
 ![](imgs/minio6.png)
