@@ -37,8 +37,8 @@ with DAG(dag_id="nyc_taxi2", start_date=datetime(2023, 7, 1), schedule=None) as 
         sql = """
         CREATE TABLE IF NOT EXISTS nyc_taxi_warehouse(
             vendorid  INT, 
-            tpep_pickup_datetime TIMESTAMP WITHOUT TIME ZONE, 
-            tpep_dropoff_datetime TIMESTAMP WITHOUT TIME ZONE, 
+            pickup_datetime TIMESTAMP WITHOUT TIME ZONE, 
+            dropoff_datetime TIMESTAMP WITHOUT TIME ZONE, 
             passenger_count FLOAT, 
             trip_distance FLOAT, 
             ratecodeid FLOAT, 
@@ -53,8 +53,7 @@ with DAG(dag_id="nyc_taxi2", start_date=datetime(2023, 7, 1), schedule=None) as 
             tolls_amount FLOAT, 
             improvement_surcharge FLOAT, 
             total_amount FLOAT, 
-            congestion_surcharge FLOAT,
-            airport_fee FLOAT
+            congestion_surcharge FLOAT
         );
         
     """
