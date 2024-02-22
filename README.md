@@ -5,7 +5,7 @@
 
 ## Overall data architecture
 
-![](imgs/datadrawio.drawio.png)
+![](imgs/final.png)
 
 
 ## Note:
