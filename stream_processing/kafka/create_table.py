@@ -23,10 +23,9 @@ def main():
     create_table_query = """
         CREATE TABLE IF NOT EXISTS nyc_taxi (
             created TIMESTAMP WITHOUT TIME ZONE,
-            content VARCHAR(30),
             vendorid  INT, 
-            tpep_pickup_datetime TIMESTAMP WITHOUT TIME ZONE, 
-            tpep_dropoff_datetime TIMESTAMP WITHOUT TIME ZONE, 
+            pickup_datetime TIMESTAMP WITHOUT TIME ZONE, 
+            dropoff_datetime TIMESTAMP WITHOUT TIME ZONE, 
             passenger_count FLOAT, 
             trip_distance FLOAT, 
             ratecodeid FLOAT, 
@@ -42,7 +41,7 @@ def main():
             improvement_surcharge FLOAT, 
             total_amount FLOAT, 
             congestion_surcharge FLOAT,
-            airport_fee FLOAT
+            content VARCHAR(30)
         );
     """
     try:

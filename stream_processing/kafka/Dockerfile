@@ -6,7 +6,7 @@ COPY create_table.py create_table.py
 COPY insert_table.py insert_table.py
 COPY run.sh .
 COPY configs ./configs
-COPY yellow_stream.parquet yellow_stream.parquet
+COPY stream.parquet stream.parquet
 COPY requirements.txt requirements.txt
 COPY postgresql_client.py postgresql_client.py
 COPY producer.sh producer.sh

@@ -112,15 +112,21 @@ with DAG(dag_id="nyc_taxi", start_date=datetime(2023, 7, 1), schedule=None) as d
         for file in os.listdir(data_path):
             if file.endswith(".parquet"):
                 df=pd.read_parquet(os.path.join(data_path,file))
-                if "airport_fee" in df.columns:
-                    df=df.drop(columns=["airport_fee"])
                 if file.startswith("green"):
                        #rename columns tpep_pickup_datetime to pickup_datetime
                     df.rename(columns={"lpep_pickup_datetime":"pickup_datetime","lpep_dropoff_datetime":"dropoff_datetime"},inplace=True)
+                    df.rename(columns={"ehail_fee":"fee"},inplace=True)
+                    #drop trip_type
+                    if "trip_type" in df.columns:
+                        df.drop(columns=["trip_type"],inplace=True)
                 else:
+                    df.rename(columns={"airport_fee":"fee"},inplace=True)
                     df.rename(columns={"tpep_pickup_datetime":"pickup_datetime","tpep_dropoff_datetime":"dropoff_datetime"},inplace=True)
                 #lower case all columns
                 df.columns=map(str.lower,df.columns)
+                #drop fee column
+                if "fee" in df.columns:
+                    df.drop(columns=["fee"],inplace=True)
                 df.to_parquet(os.path.join(data_path,file))
     @task 
     def create_streamming_data():
@@ -133,11 +139,14 @@ with DAG(dag_id="nyc_taxi", start_date=datetime(2023, 7, 1), schedule=None) as d
         for file in os.listdir(data_path):
             df=pd.read_parquet(os.path.join(data_path,file))
             #get random 1000 rows
+            #drop na
+            df=df.dropna()
             print(df.shape)
-            if df.shape[0]<1000:
+            if df.shape[0]<10000:
                 continue
-            df=df.sample(n=1000)
-        df_list.append(df)
+            df=df.sample(n=10000)
+            df["content"]=[file.split("_")[0]]*10000
+            df_list.append(df)
         df=pd.concat(df_list)
         df.to_parquet(os.path.join(streamming_path,"stream.parquet"))
-    system_maintenance_task>>download_nyc_data_yellow()>>download_nyc_data_green()>>transform_data()>>create_streamming_data()
+    system_maintenance_task>>[download_nyc_data_yellow(),download_nyc_data_green()]>>transform_data()>>create_streamming_data()
