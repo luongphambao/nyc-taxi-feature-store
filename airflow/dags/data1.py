@@ -105,14 +105,31 @@ with DAG(dag_id="nyc_taxi", start_date=datetime(2023, 7, 1), schedule=None) as d
                 df.to_parquet(os.path.join(data_path,file))
                 print("Dropped missing data from file: "+file)
     @task 
+    def transform_data():
+        import pandas as pd
+        import os
+        data_path="/opt/airflow/data/"
+        for file in os.listdir(data_path):
+            if file.endswith(".parquet"):
+                df=pd.read_parquet(os.path.join(data_path,file))
+                if "airport_fee" in df.columns:
+                    df=df.drop(columns=["airport_fee"])
+                if file.startswith("green"):
+                       #rename columns tpep_pickup_datetime to pickup_datetime
+                    df.rename(columns={"lpep_pickup_datetime":"pickup_datetime","lpep_dropoff_datetime":"dropoff_datetime"},inplace=True)
+                else:
+                    df.rename(columns={"tpep_pickup_datetime":"pickup_datetime","tpep_dropoff_datetime":"dropoff_datetime"},inplace=True)
+                #lower case all columns
+                df.columns=map(str.lower,df.columns)
+                df.to_parquet(os.path.join(data_path,file))
+    @task 
     def create_streamming_data():
         import pandas as pd
         import os
         data_path="/opt/airflow/data/"
         streamming_path=os.path.join(data_path,"stream")
         os.makedirs(streamming_path, exist_ok=True)
-        df_green_list=[]
-        df_yellow_list=[]
+        df_list=[]
         for file in os.listdir(data_path):
             df=pd.read_parquet(os.path.join(data_path,file))
             #get random 1000 rows
@@ -120,14 +137,7 @@ with DAG(dag_id="nyc_taxi", start_date=datetime(2023, 7, 1), schedule=None) as d
             if df.shape[0]<1000:
                 continue
             df=df.sample(n=1000)
-
-            if file.endswith(".parquet"):
-                if "green" in file:
-                    df_green_list.append(df)
-                else:
-                    df_yellow_list.append(df)
-        df_green=pd.concat(df_green_list)
-        df_yellow=pd.concat(df_yellow_list)
-        df_green.to_parquet(os.path.join(streamming_path,"green_stream.parquet"))
-        df_yellow.to_parquet(os.path.join(streamming_path,"yellow_stream.parquet"))
-    system_maintenance_task>>download_nyc_data_yellow()>>download_nyc_data_green()>>create_streamming_data()
+        df_list.append(df)
+        df=pd.concat(df_list)
+        df.to_parquet(os.path.join(streamming_path,"stream.parquet"))
+    system_maintenance_task>>download_nyc_data_yellow()>>download_nyc_data_green()>>transform_data()>>create_streamming_data()
