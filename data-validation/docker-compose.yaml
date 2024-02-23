@@ -1,0 +1,19 @@
+---
+version: '2'
+services:
+  postgresql:
+    image: debezium/postgres:13
+    platform: linux/amd64
+    container_name: postgresql
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=k6
+      - POSTGRES_USER=k6
+      - POSTGRES_PASSWORD=k6
+    volumes: 
+      - dbt_postgresql_data:/var/lib/postgresql/data
+
+volumes:
+  dbt_postgresql_data:
+    driver: local

@@ -1,0 +1,8 @@
+pyspark==3.3.2
+pydeequ==1.0.1
+python-dotenv==1.0.0
+SQLAlchemy==2.0.9
+psycopg2-binary==2.9.9
+fastparquet==2023.8.0
+jupyterlab==4.0.6
+great_expectations==0.17.21

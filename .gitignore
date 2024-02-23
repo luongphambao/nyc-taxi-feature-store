@@ -19,3 +19,4 @@ airflow/plugins
 data/
 airflow/run_env/dags/__pycache__
 .csv
+data-validation/data
