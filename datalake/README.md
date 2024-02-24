@@ -24,25 +24,25 @@ CREATE SCHEMA IF NOT EXISTS datalake.taxi_time_series
 WITH (location = 's3://taxi-time-series/');
 
 CREATE TABLE IF NOT EXISTS datalake.taxi_time_series.nyc_taxi (
-  VendorID INT,
-  tpep_pickup_datetime TIMESTAMP,
-  tpep_dropoff_datetime TIMESTAMP,
-  passenger_count DOUBLE,
-  trip_distance DOUBLE,
-  RatecodeID DOUBLE, 
-  store_and_fwd_flag VARCHAR(5), 
-  PULocationID INT,
-  DOLocationID INT, 
-  payment_type INT, 
-  fare_amount DOUBLE, 
-  extra DOUBLE, 
-  mta_tax DOUBLE, 
-  tip_amount DOUBLE, 
-  tolls_amount DOUBLE, 
+  congestion_surcharge DOUBLE,
+  dolocationid INT,
+  dropoff_datetime TIMESTAMP,
+  extra DOUBLE,
+  fare_amount DOUBLE,
   improvement_surcharge DOUBLE,
+  mta_tax DOUBLE,
+  passenger_count DOUBLE,
+  payment_type INT,
+  pickup_datetime TIMESTAMP,
+  pulocationid INT,
+  ratecodeid DOUBLE,
+  store_and_fwd_flag VARCHAR(30),
+  tip_amount DOUBLE,
+  tolls_amount DOUBLE,
   total_amount DOUBLE,
-  congestion_surcharge DOUBLE, 
-  Airport_fee DOUBLE
+  trip_distance DOUBLE,
+  vendorid INT
+
 ) WITH (
   external_location = 's3://taxi-time-series/nyc_taxi',
   format = 'PARQUET'
@@ -53,3 +53,22 @@ CREATE TABLE IF NOT EXISTS datalake.taxi_time_series.nyc_taxi (
 1. Install `DBeaver` as in the following [guide](https://dbeaver.io/download/)
 2. Connect to our database (type `trino`) using the following information (empty `password`):
   ![DBeaver Trino](./imgs/trino.png)
+CREATE TABLE IF NOT EXISTS datalake.nyc_taxi
+congestion_surcharge DOUBLE,
+dolocationid INT,
+dropoff_datetime TIMESTAMP,
+extra DOUBLE,
+fare_amount DOUBLE,
+improvement_surcharge DOUBLE,
+mta_tax DOUBLE,
+passenger_count DOUBLE,
+payment_type DOUBLE,
+pickup_datetime TIMESTAMP,
+pulocationid INT,
+ratecodeid DOUBLE,
+store_and_fwd_flag VARCHAR(30),
+tip_amount DOUBLE,
+tolls_amount DOUBLE,
+total_amount DOUBLE,
+trip_distance DOUBLE,
+vendorid INT

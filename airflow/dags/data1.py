@@ -102,7 +102,10 @@ with DAG(dag_id="nyc_taxi", start_date=datetime(2023, 7, 1), schedule=None) as d
             if file.endswith(".parquet"):
                 df=pd.read_parquet(os.path.join(data_path,file))
                 df=df.dropna()
+                #sorted columns
+                df=df.reindex(sorted(df.columns), axis=1)
                 df.to_parquet(os.path.join(data_path,file))
+            
                 print("Dropped missing data from file: "+file)
     @task 
     def transform_data():
@@ -129,6 +132,19 @@ with DAG(dag_id="nyc_taxi", start_date=datetime(2023, 7, 1), schedule=None) as d
                     df.drop(columns=["fee"],inplace=True)
                 df.to_parquet(os.path.join(data_path,file))
     @task 
+    def fix_data_type():
+        import pandas as pd
+        import os
+        data_path="/opt/airflow/data/"
+        for file in os.listdir(data_path):
+            if file.endswith(".parquet"):
+                df=pd.read_parquet(os.path.join(data_path,file))
+                #convert payment_type to int 
+                if "payment_type" in df.columns:
+                    df['payment_type']=df['payment_type'].astype(int)
+                df.to_parquet(os.path.join(data_path,file))
+
+    @task 
     def create_streamming_data():
         import pandas as pd
         import os
@@ -149,4 +165,4 @@ with DAG(dag_id="nyc_taxi", start_date=datetime(2023, 7, 1), schedule=None) as d
             df_list.append(df)
         df=pd.concat(df_list)
         df.to_parquet(os.path.join(streamming_path,"stream.parquet"))
-    system_maintenance_task>>[download_nyc_data_yellow(),download_nyc_data_green()]>>transform_data()>>create_streamming_data()
+    system_maintenance_task>>[download_nyc_data_yellow(),download_nyc_data_green()]>>fix_data_type()>>transform_data()>>drop_mssing_data()>>create_streamming_data()
