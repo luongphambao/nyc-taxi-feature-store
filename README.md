@@ -5,7 +5,7 @@
 
 ## Overall data architecture
 
-![](imgs/final.png)
+![](imgs/final1.png)
 
 
 ## Note:
@@ -78,3 +78,48 @@ For example: Run all service by command
 + All files needed to upload to MinIO will be executed
 + If you want to test query datalake you can create view ... 
 ![](imgs/minio6.png)
+### 2.3 Batch processing
++ Pyspark comes into plays when raw diabetes csv files needed to be preprocessed before feeding to models
++ Notice that some columns of dataset such as: Pregnancies, BloodPressure, SkinThickness, Insulin, Age have wide value ranges. Therefore, these columns needed to be scaled into 0 and 1, so min-max scaler is chosen 
+#### How to guide
+
++ ```python pyspark/batch_processing.py``` 
++ ```pyspark/spark_insert.py```
++ ```pyspark/validation.py```
++ Processed data will be stored in PostgreSQL datawarehouse for later used
+![](imgs/monitoring_architecture.png)
+### 2.5. Streaming data source
++ Besides csv files data, there is also a streaming diabetes data
++ A new sample will be stored in a table in PostgreSQL
++ Then Debezium, which is a connector for PostgreSQL, will scan the table to check whenever the database has new data
++ The detected new sample will be push to the defined topic in Kafka
++ Any consumer can get messages from topic for any purposes
+#### How to guide
++ ```cd postgresql_utils```
++ ```./run.sh register_connector ../configs/postgresql-cdc.json``` to send PostgreSQL config to Debezium
+![](imgs/debezium.png)
++ ```python create_table.py``` to create a new table on PostgreSQL
++ ```python insert_table.py``` to insert data to the table
++ We can access Kafka at port 9021 to check the results
+![](imgs/kafka.png)
++ Then click **Topics** bar to get all existing topics on Kafka
+![](imgs/kafka2.png)
+    + **dunghc.public.diabetes_new** is my created topic
++ Choose **Messages** to observe streaming messages
+![](imgs/kafka1.png)
+
+### 2.6. Streaming processing
++ To handle this streaming datasource, Pyflink is a good option to do this task
+#### How to guide
++ ```cd stream_processing```
++ ```python datastream_api.py```
+    + This script will check necessary key in messages as well as filter redundant keys and merge data for later use
+![](imgs/flink2.png)
+        + Only information columns are kept
+    + Processed samples will be stored back to Kafka in the defined sink
+![](imgs/sink.png)
+        + **dunghc.public.sink_diabetes** is the defined sink in my case
++ ```python kafka_consumer.py```
+    + Messages from sink will be fed into diabetes service to get predictions
+    + From then, New data is created
+    + Notice, we have to validate predictions from the diabetes model to ensure labels are correct before using that data to train new models.
