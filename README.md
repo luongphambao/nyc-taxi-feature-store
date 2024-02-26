@@ -123,3 +123,35 @@ For example: Run all service by command
     + Messages from sink will be fed into diabetes service to get predictions
     + From then, New data is created
     + Notice, we have to validate predictions from the diabetes model to ensure labels are correct before using that data to train new models.
+
+ 
+### Deploy data pipeline on Google Compute Engine
+### 3.1. Spin up your instance
+Create your [service account](https://console.cloud.google.com/), and select [Compute Admin](https://cloud.google.com/compute/docs/access/iam#compute.admin) role (Full control of all Compute Engine resources) for your service account.
+
+Create new key as json type for your service account. Download this json file and save it in `infra/ansible/secrets` directory. Update your `project` and `service_account_file` in `infra/ansible/create_compute_instance.yaml`.
+
+![](gifs/create_svc_acc_out.gif)
+
+Go back to your terminal, please execute the following commands to create the Compute Engine instance:
+```bash
+cd infra/ansible
+ansible-playbook create_compute_instance.yaml
+```
+
+![](gifs/create_compute_instance.gif)
+
+Go to Settings, select [Metadata](https://console.cloud.google.com/compute/metadata) and add your SSH key.
+
+Update the IP address of the newly created instance and the SSH key for connecting to the Compute Engine in the inventory file.
+
+![](gifs/ssh_key_out.gif)
+
++ ```cd ansible```
++ To initialize a compute engine, json key file of service account on google cloud is located at **secrets folder**
++ ```ansible-playbook create_compute_instance.yaml``` to create virtual machine instance using ansible. Configuration of machine was defined in file create_compute_instance.yaml
+![](imgs/gcp.png)
+    + Virtual machine is ready to run
+    + Before moving to next step, subtitute **External IP** of created compute engine to **inventory file** in **ansible folder**
+![](imgs/gcp1.png) 
++ ```ansible-playbook -i ../inventory deploy.yml``` to deploy data pipeline on cloud.
