@@ -56,7 +56,7 @@ For example: Run all service by command
 
  data2: Create Datawarehous->Insert data-> Check expectations
 
-### 2.3 Batch processing
+### Batch processing
 
 +Pyspark helps efficiently handle big data, speeding up data reading and writing, and processing much faster as data grows.
 
@@ -67,7 +67,7 @@ For example: Run all service by command
 + ```python pyspark/spark_insert.py```
 + ```python pyspark/validation.py```
 ![](imgs/monitoring_architecture.png)
-### 2.5. Streaming data source
+### Streaming data source
 + Nyc taxi streaming data is generated based on data from datalake
 + Each newly created data sample is stored in a table in PostgreSQL
 + Debezium then acts as a connector with PostgreSQL and will scan the table to check if the database has newly updated data.
@@ -85,27 +85,29 @@ First, we change directory to `stream_processing/kafka``
 ![](imgs/kafka1.png)
     + **nyc_taxi.public.nyc_taxi** is my created topic
 + Choose **Messages** to observe streaming messages
-![](imgs/kafka2.1.png)
-
-### 2.6. Streaming processing
+![](imgs/kafka_mess.png)
++ Finally, you can create kafka service for streaming data
+``` 
+cd stream_processing/kafka
+docker build -t nyc_producer:latest .
+docker image tag nyc_producer:latest ${name}/nyc_producer:latest
+docker push ${name}/nyc_producer:latest #name is your docker hub name
+```
+### Streaming processing
 + To handle this streaming datasource, Pyflink is a good option to do this task
 #### How to guide
 + ```cd stream_processing/scripts```
-+ ```python datastream_api.py```
-    + This script will check necessary key in messages as well as filter redundant keys and merge data for later use
-![](imgs/flink2.png)
-        + Only information columns are kept
-    + Processed samples will be stored back to Kafka in the defined sink
++ ```python datastream_api.py && python window_datastream_api.py```
+    + These scripts will extract the necessary information fields in the message and aggregate the data to serve many purposes
+    + Processed data samples will be stored in kafka in the specified sink
 ![](imgs/sink.png)
-        + **dunghc.public.sink_diabetes** is the defined sink in my case
+        + **nyc_taxi.sink.datastream** and **nyc_taxi.sink_window.datastream** is the defined sink and window sink in my case
 + ```python kafka_consumer.py```
-    + Messages from sink will be fed into diabetes service to get predictions
-    + From then, New data is created
-    + Notice, we have to validate predictions from the diabetes model to ensure labels are correct before using that data to train new models.
+    + Messages from the sink and window sink will be stored and used for analysis in the future
 
  
-### Deploy data pipeline on Google Compute Engine
-### 3.1. Spin up your instance
+## Deploy data pipeline on Google Compute Engine
+### Spin up your instance
 Create your [service account](https://console.cloud.google.com/), and select [Compute Admin](https://cloud.google.com/compute/docs/access/iam#compute.admin) role (Full control of all Compute Engine resources) for your service account.
 
 Create new key as json type for your service account. Download this json file and save it in `infra/ansible/secrets` directory. Update your `project` and `service_account_file` in `infra/ansible/create_compute_instance.yaml`.
