@@ -56,37 +56,16 @@ For example: Run all service by command
 
  data2: Create Datawarehous->Insert data-> Check expectations
 
-### 2.1. MinIO
-+ MinIO is a datalake service
-+ We can access MinIO console at port 9001 with user `minio_access_key` and password `minio_secret_key`
-![](imgs/minio.png)
-#### 2.1.1. Manual interaction
-+ First, Select to **Buckets** and   choose **Create Bucket**
-![](imgs/minio1.png)
-+ Name the bucket 
-![](imgs/minio2.png)
-+ C lick to **Object Browser** and choose bucket had created on the console
-![](imgs/minio3.png)
-+ Click **Upload** to upload any files or folders
-![](imgs/minio4.png)
-![](imgs/minio5.png)
-#### 2.1.2. Automate interaction
-+ Beside manual upload, we can use code to upload files or folder to MinIO
-#### How to guide
-+ You edit data_path and config in `utils/datalake.yaml`
-+ ```python src/export_data_to_datalake.py```
-+ All files needed to upload to MinIO will be executed
-+ If you want to test query datalake you can create view ... 
-![](imgs/minio6.png)
 ### 2.3 Batch processing
-+ Pyspark comes into plays when raw diabetes csv files needed to be preprocessed before feeding to models
-+ Notice that some columns of dataset such as: Pregnancies, BloodPressure, SkinThickness, Insulin, Age have wide value ranges. Therefore, these columns needed to be scaled into 0 and 1, so min-max scaler is chosen 
+
++Pyspark helps efficiently handle big data, speeding up data reading and writing, and processing much faster as data grows.
+
++In this problem, we leverage Pyspark to transform and store data into a data warehouse, as well as quickly validate data.
 #### How to guide
 
 + ```python pyspark/batch_processing.py``` 
-+ ```pyspark/spark_insert.py```
-+ ```pyspark/validation.py```
-+ Processed data will be stored in PostgreSQL datawarehouse for later used
++ ```python pyspark/spark_insert.py```
++ ```python pyspark/validation.py```
 ![](imgs/monitoring_architecture.png)
 ### 2.5. Streaming data source
 + Besides csv files data, there is also a streaming diabetes data
