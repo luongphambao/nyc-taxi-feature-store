@@ -100,7 +100,7 @@ docker push ${name}/nyc_producer:latest #name is your docker hub name
 + ```python datastream_api.py && python window_datastream_api.py```
     + These scripts will extract the necessary information fields in the message and aggregate the data to serve many purposes
     + Processed data samples will be stored in kafka in the specified sink
-![](imgs/sink.png)
+![](imgs/kafka1.png)
         + **nyc_taxi.sink.datastream** and **nyc_taxi.sink_window.datastream** is the defined sink and window sink in my case
 + ```python kafka_consumer.py```
     + Messages from the sink and window sink will be stored and used for analysis in the future
