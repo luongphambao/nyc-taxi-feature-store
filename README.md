@@ -13,8 +13,8 @@
 + **jars** folder: contain used jars file for data pipeline 
 + **airflow** folder: enviroment to run airflow service
 + **utils** folder: helper funtions
-+ **This repo is implemented on nyc taxi data**
-![](imgs/gcs.png)
++ **This repo is implemented on 170GB nyc taxi data**
+![](imgs/data.png)
 ## 1. Installation
 + Tested on Python 3.9.12 (recommended to use a virtual environment such as Conda)
  ```bash
@@ -68,29 +68,29 @@ For example: Run all service by command
 + ```python pyspark/validation.py```
 ![](imgs/monitoring_architecture.png)
 ### 2.5. Streaming data source
-+ Besides csv files data, there is also a streaming diabetes data
-+ A new sample will be stored in a table in PostgreSQL
-+ Then Debezium, which is a connector for PostgreSQL, will scan the table to check whenever the database has new data
-+ The detected new sample will be push to the defined topic in Kafka
-+ Any consumer can get messages from topic for any purposes
++ Nyc taxi streaming data is generated based on data from datalake
++ Each newly created data sample is stored in a table in PostgreSQL
++ Debezium then acts as a connector with PostgreSQL and will scan the table to check if the database has newly updated data.
++ Newly created data will be pushed to corresponding topics in kafka
++ Any consumer can receive messages from the topic to which the consumer subscribes
 #### How to guide
-+ ```cd postgresql_utils```
-+ ```./run.sh register_connector ../configs/postgresql-cdc.json``` to send PostgreSQL config to Debezium
+First, we change directory to `stream_processing/kafka``
++ ```bash run.sh register_connector configs/postgresql-cdc.json```to send PostgreSQL config to Debezium
 ![](imgs/debezium.png)
 + ```python create_table.py``` to create a new table on PostgreSQL
 + ```python insert_table.py``` to insert data to the table
 + We can access Kafka at port 9021 to check the results
 ![](imgs/kafka.png)
 + Then click **Topics** bar to get all existing topics on Kafka
-![](imgs/kafka2.png)
-    + **dunghc.public.diabetes_new** is my created topic
-+ Choose **Messages** to observe streaming messages
 ![](imgs/kafka1.png)
+    + **nyc_taxi.public.nyc_taxi** is my created topic
++ Choose **Messages** to observe streaming messages
+![](imgs/kafka2.1.png)
 
 ### 2.6. Streaming processing
 + To handle this streaming datasource, Pyflink is a good option to do this task
 #### How to guide
-+ ```cd stream_processing```
++ ```cd stream_processing/scripts```
 + ```python datastream_api.py```
     + This script will check necessary key in messages as well as filter redundant keys and merge data for later use
 ![](imgs/flink2.png)
