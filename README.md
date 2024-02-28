@@ -146,3 +146,5 @@ Update the IP address of the newly created instance and the SSH key for connecti
 ![](imgs/gcp1.png) 
 + ```cd infra/ansible/deploy_dataservice &&ansible-playbook -i ../inventory deploy.yml``` to deploy data pipeline on cloud.
 + ```cd infra/ansible/deploy_monitoring &&ansible-playbook -i ../inventory deploy.yml``` to deploy monitoring tools on cloud.
++ You can see all dataservice run in GCP :))
+![](imgs/gcp2.png) 
