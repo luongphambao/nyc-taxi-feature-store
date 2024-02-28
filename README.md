@@ -52,19 +52,7 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
 ### Data Transformation DBT
   You can see `dbt_nyc/README.MD` for details guide (setup,srcipts,...)  
 ### Airflow
-
-+ Airflow is a service to manage and schedule data pipeline
-+ In this repo, airflow is run data pipeline (download data, transform data, insert data, check expectations,...)
-+ To run Airflow, you can you following command ```make airflow up``` to run Airflow service( you can run ```make warehouse_up``` to start DB)
- Accesss at http://localhost:8080/ to for Airflow UI to run dag (login with username and password is `airflow`)
- ![](imgs/airflow3.png)
- You have to create connection `postgre_default` before running dag ```data2.py```
- ![](imgs/airflow1.png)
-
- You can see task in `airflow/dags` folder
- ![](imgs/airflow4.png)
- ![](imgs/airflow5.png)
-  You can manual run dags by click on Run icon ![](imgs/airflow7.png)
+  You can see `airflow/README.MD` for details guide (setup,srcipts,...)
 ### Batch processing
 
 +Pyspark helps efficiently handle big data, speeding up data reading and writing, and processing much faster as data grows.
@@ -76,44 +64,8 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
 + ```python pyspark/spark_insert.py```
 + ```python pyspark/validation.py```
 ![](imgs/monitoring_architecture.png)
-### Streaming data source
-+ Nyc taxi streaming data is generated based on data from datalake
-+ Each newly created data sample is stored in a table in PostgreSQL
-+ Debezium then acts as a connector with PostgreSQL and will scan the table to check if the database has newly updated data.
-+ Newly created data will be pushed to corresponding topics in kafka
-+ Any consumer can receive messages from the topic to which the consumer subscribes
-#### How to guide
-First, we change directory to `stream_processing/kafka``
-+ ```bash run.sh register_connector configs/postgresql-cdc.json```to send PostgreSQL config to Debezium
-![](imgs/debezium.png)
-+ ```python create_table.py``` to create a new table on PostgreSQL
-+ ```python insert_table.py``` to insert data to the table
-+ We can access Kafka at port 9021 to check the results
-![](imgs/kafka.png)
-+ Then click **Topics** bar to get all existing topics on Kafka
-![](imgs/kafka1.png)
-    + **nyc_taxi.public.nyc_taxi** is my created topic
-+ Choose **Messages** to observe streaming messages
-![](imgs/kafka_mess.png)
-+ Finally, you can create kafka service for streaming data
-``` 
-cd stream_processing/kafka
-docker build -t nyc_producer:latest .
-docker image tag nyc_producer:latest ${name}/nyc_producer:latest
-docker push ${name}/nyc_producer:latest #name is your docker hub name
-```
-### Streaming processing
-+ To handle this streaming datasource, Pyflink is a good option to do this task
-#### How to guide
-+ ```cd stream_processing/scripts```
-+ ```python datastream_api.py && python window_datastream_api.py```
-    + These scripts will extract the necessary information fields in the message and aggregate the data to serve many purposes
-    + Processed data samples will be stored in kafka in the specified sink
-![](imgs/kafka1.png)
-        + **nyc_taxi.sink.datastream** and **nyc_taxi.sink_window.datastream** is the defined sink and window sink in my case
-+ ```python kafka_consumer.py```
-    + Messages from the sink and window sink will be stored and used for analysis in the future
-
+### Streamming Processing
++ You can see `stream_processing/README.MD` for details guide (setup,srcipts,...)
  
 ## Deploy data pipeline on Google Compute Engine
 ### Spin up your instance
