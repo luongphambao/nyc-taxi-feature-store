@@ -1,7 +1,7 @@
 # MLE2
 ## **Description**: 
 
-+ In this repository, there is a constructed data pipeline featuring distinct flows tailored for batch and streaming data processing. Different services are utilized to meet the specific needs of each flow. Pyspark, PostgreSQL, Flink, Kafka, DBT, and Airflow are prominent among the services employed for these purposes. Moreover, monitoring tools like Prometheus, Grafana, and LogStash are integrated to ensure effective performance tracking.
++ In this repository, there is a constructed data pipeline featuring distinct flows tailored for batch and streaming data processing. Different services are utilized to meet the specific needs of each flow. Pyspark, PostgreSQL, Flink, Kafka, DBT, and Airflow are prominent among the services employed for these purposes. Moreover, monitoring tools like Prometheus, Grafana, are integrated to ensure effective performance monitoring. 
 
 ## Overall data architecture
 
@@ -9,11 +9,19 @@
 
 
 ## Note:
-+ **stream_processing** folder: contain pyflink scripts to process streaming data
-+ **jars** folder: contain used jars file for data pipeline 
-+ **airflow** folder: enviroment to run airflow service
++ **stream_processing** folder: contain streaming data source and streaming processing service (kafka for data source and flink for processing)
++ **jars** folder: contain used jars file for data pipeline (Pyspark)
++ **airflow** folder: contain airflow dag,configuration,and deployment
 + **utils** folder: helper funtions
++ **pyspark** folder: contain scripts for batch processing
++ **infra** folder: contain ansible playbook for deploying data pipeline, monitoring tools, and airflow on Google Compute Engine
++ **monitoring** folder: contain configuration for monitoring tools (Prometheus, Grafana)
++ **data** folder: contain data raw and streaming data
++ **data-validation** folder: contain great_expectations for data validation
++ **dbt_nyc** folder: contain dbt project for data transformation nyctaxi data
++ **src** folder: contain source code for data pipeline
 + **This repo is implemented on 170GB nyc taxi data**
+
 ![](imgs/data.png)
 ## 1. Installation
 + Tested on Python 3.9.12 (recommended to use a virtual environment such as Conda)
@@ -42,7 +50,7 @@ For example: Run all service by command
 
 + Airflow is a service to manage and schedule data pipeline
 + In this repo, airflow is run data pipeline (download data, transform data, insert data, check expectations,...)
- Accesss at http://localhost:8080/ to for Airflow UI to run dag
+ Accesss at http://localhost:8080/ to for Airflow UI to run dag (login with username and password is `airflow`)
  ![](imgs/airflow3.png)
  You have to create connection `postgre_default` before running dag ```data2.py```
  ![](imgs/airflow1.png)
