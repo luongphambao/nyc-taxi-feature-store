@@ -53,6 +53,8 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
   You can see `dbt_nyc/README.MD` for details guide (setup,srcipts,...)  
 ### Airflow
   You can see `airflow/README.MD` for details guide (setup,srcipts,...)
+### Streamming Processing
++ You can see `stream_processing/README.MD` for details guide (setup,srcipts,...)
 ### Batch processing
 
 +Pyspark helps efficiently handle big data, speeding up data reading and writing, and processing much faster as data grows.
@@ -64,8 +66,7 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
 + ```python pyspark/spark_insert.py```
 + ```python pyspark/validation.py```
 ![](imgs/monitoring_architecture.png)
-### Streamming Processing
-+ You can see `stream_processing/README.MD` for details guide (setup,srcipts,...)
+
  
 ## Deploy data pipeline on Google Compute Engine
 ### Spin up your instance
