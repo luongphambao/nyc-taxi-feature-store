@@ -26,7 +26,7 @@ datasources:
         class_name: ConfiguredAssetSqlDataConnector
         module_name: great_expectations.datasource.data_connector
         assets:
-          nyc_taxi:
+          nyc_taxi_warehouse:
             class_name: Asset
             module_name: great_expectations.datasource.data_connector.asset
             schema_name: public
