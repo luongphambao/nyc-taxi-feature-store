@@ -39,14 +39,14 @@ You can use list command in `Makefile` to run service
 
 For example: Run all service by command
 
- ```bash
-    make run_all
- ```
+ ```make run_all```
  ### Moniotring 
  Access at http://localhost:3000/ to for Grafana for tracking resource usage 
   ![](imgs/grafana.png)
   
- ### Airflow
+### Datalake-Minio
+ You can see `datalake/README.MD` for details guide (setup,srcipts,...)
+### Airflow
 
 + Airflow is a service to manage and schedule data pipeline
 + In this repo, airflow is run data pipeline (download data, transform data, insert data, check expectations,...)
