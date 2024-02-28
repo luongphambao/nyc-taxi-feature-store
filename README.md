@@ -30,7 +30,7 @@
     pip install -r requirements.txt
  ```
 
-+ Data: You can dowload and use this dataset in here: https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page. The format data i use in this Project is Parquet file
++ Data: You can dowload and use this dataset in here: https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page. The format data I used in this Project is parquet/csv file
 
 + Docker engine
 ## How to guide 
@@ -138,4 +138,5 @@ Update the IP address of the newly created instance and the SSH key for connecti
     + Virtual machine is ready to run
     + Before moving to next step, subtitute **External IP** of created compute engine to **inventory file** in **ansible folder**
 ![](imgs/gcp1.png) 
-+ ```ansible-playbook -i ../inventory deploy.yml``` to deploy data pipeline on cloud.
++ ```cd infra/ansible/deploy_dataservice &&ansible-playbook -i ../inventory deploy.yml``` to deploy data pipeline on cloud.
++ ```cd infra/ansible/deploy_monitoring &&ansible-playbook -i ../inventory deploy.yml``` to deploy monitoring tools on cloud.
