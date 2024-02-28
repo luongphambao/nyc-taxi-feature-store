@@ -43,7 +43,8 @@ For example: Run all service by command
  ### Moniotring 
  Access at http://localhost:3000/ to for Grafana for tracking resource usage 
   ![](imgs/grafana.png)
-  
+Access at http://localhost:5601/ to for Kibana for tracking logs
+  ![](imgs/kibana.png)
 ### Datalake-Minio
  You can see `datalake/README.MD` for details guide (setup,srcipts,...)
 ### Data Vaiidation
