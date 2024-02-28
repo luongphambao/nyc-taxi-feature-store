@@ -40,21 +40,16 @@ For example: Run all service by command
   
  ### Airflow
 
-
- You can see task in `airflow/dags` in  `data1.py` and `data2.py`
-
- ```bash
-    make airflow_up
- ```
-
++ Airflow is a service to manage and schedule data pipeline
++ In this repo, airflow is run data pipeline (download data, transform data, insert data, check expectations,...)
  Accesss at http://localhost:8080/ to for Airflow UI to run dag
- ![](imgs/airflow.png)
- You create connection `postgre_default` 
+ ![](imgs/airflow3.png)
+ You have to create connection `postgre_default` before running dag ```data2.py```
  ![](imgs/airflow1.png)
 
- data1: Download data ->Create streamming data -> Transform data
-
- data2: Create Datawarehous->Insert data-> Check expectations
+ You can see task in `airflow/dags` folder
+ ![](imgs/airflow4.png)
+ ![](imgs/airflow5.png)
 
 ### Batch processing
 
