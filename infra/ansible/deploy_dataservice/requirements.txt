@@ -9,8 +9,6 @@ sqlalchemy
 confluent-kafka
 python-dotenv
 apache-flink
-loguru
-uvicorn[standard]
 apache-airflow
 apache-airflow-providers-postgres
 airflow-provider-great-expectations

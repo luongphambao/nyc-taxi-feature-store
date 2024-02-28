@@ -65,7 +65,30 @@
         delete: yes
         compress: yes
       become: yes
-    
+    - name: Copy jars to server
+      synchronize:
+        src: ../../../jars
+        dest: /home/luongphambao
+        recursive: yes
+        archive: yes
+        delete: yes
+        compress: yes
+      become: yes
+    - name: Copy source to server
+      copy:
+        src: ../../../src
+        dest: /home/luongphambao
+        mode: preserve
+    - name: Copy batch processing scripts to server
+      copy:
+        src: ../../../pyspark
+        dest: /home/luongphambao
+        mode: preserve
+    - name: Copy scripts for streamming processing to server
+      copy:
+        src: ../../../stream_processing/scripts
+        dest: /home/luongphambao
+        mode: preserve
     - name: Copy docker compose file to server
       copy:
         src: docker-compose.yml
@@ -83,7 +106,11 @@
         src: ../../../.env
         dest: /home/luongphambao
         mode: preserve
-
+    - name: Copy requirements file to server
+      copy:
+        src: requirements.txt
+        dest: /home/luongphambao
+        mode: preserve
     - name: Install Docker Compose
       pip:
         name: docker-compose
@@ -114,9 +141,9 @@
         name: 
           - pandas 
           - pyspark
+    - name: Install requirements
       pip:
         requirements: /home/luongphambao/requirements.txt
-        virtualenv: /home/luongphambao/venv
         state: present
         executable: /usr/bin/python3
       become: yes

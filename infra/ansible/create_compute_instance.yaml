@@ -39,7 +39,7 @@
 
     - name: Create inbound firewall rule for port 8081 and 50000
       gcp_compute_firewall:
-        name: allow-port-8081-50000-3000-8080
+        name: allow-port-8081-50000-3000-8080-9021
         network:
           selfLink: global/networks/default
         allowed:
@@ -49,6 +49,7 @@
               - 50000
               - 3000
               - 8080
+              - 9021
         source_ranges:
           - 0.0.0.0/0 # Allow traffic from any source (use a more specific source range for security)
         direction: INGRESS # Direction from outside to inside, EGRESS is the opposite direction
