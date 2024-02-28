@@ -55,6 +55,7 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
 
 + Airflow is a service to manage and schedule data pipeline
 + In this repo, airflow is run data pipeline (download data, transform data, insert data, check expectations,...)
++ To run Airflow, you can you following command ```make airflow up``` to run Airflow service( you can run ```make warehouse_up``` to start DB)
  Accesss at http://localhost:8080/ to for Airflow UI to run dag (login with username and password is `airflow`)
  ![](imgs/airflow3.png)
  You have to create connection `postgre_default` before running dag ```data2.py```
