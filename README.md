@@ -64,7 +64,7 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
  You can see task in `airflow/dags` folder
  ![](imgs/airflow4.png)
  ![](imgs/airflow5.png)
-
+  You can manual run dags by click on Run icon ![](imgs/airflow7.png)
 ### Batch processing
 
 +Pyspark helps efficiently handle big data, speeding up data reading and writing, and processing much faster as data grows.
