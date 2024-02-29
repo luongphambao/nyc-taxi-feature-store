@@ -1,5 +1,6 @@
 # MLE2
-## **Description**: 
+
+## Description 
 
 + In this repository, there is a constructed data pipeline featuring distinct flows tailored for batch and streaming data processing. Different services are utilized to meet the specific needs of each flow. Pyspark, PostgreSQL, Flink, Kafka, DBT, and Airflow are prominent among the services employed for these purposes. Moreover, monitoring tools like Prometheus, Grafana, are integrated to ensure effective performance monitoring. 
 
@@ -23,7 +24,7 @@
 + **This repo is implemented on 170GB nyc taxi data**
 
 ![](imgs/data.png)
-## 1. Installation
+## Installation
 + Tested on Python 3.9.12 (recommended to use a virtual environment such as Conda)
  ```bash
     conda create -n mle python=3.9
@@ -33,7 +34,7 @@
 + Data: You can dowload and use this dataset in here: https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page. The format data I used in this Project is parquet/csv file
 
 + Docker engine
-## How to guide 
+## Guide
 
 + You can use list command in `Makefile` to run service
 
@@ -73,12 +74,9 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
  
 ## Deploy data pipeline on Google Compute Engine
 ### Spin up your instance
-Create your [service account](https://console.cloud.google.com/), and select [Compute Admin](https://cloud.google.com/compute/docs/access/iam#compute.admin) role (Full control of all Compute Engine resources) for your service account.
-
+Create your [service account](https://console.cloud.google.com/), and select [Compute Admin](https://cloud.google.com/compute/docs/access/iam#compute.admin) role (Full control of all Compute Engine resources) for your service account.  
 Create new key as json type for your service account. Download this json file and save it in `ansible/secrets` directory. Update your `project` and `service_account_file` in `ansible/create_compute_instance.yaml`.
-
 ![](gifs/create_svc_acc_out.gif)
-
 Go back to your terminal, please execute the following commands to create the Compute Engine instance:
 ```bash
 cd ansible
@@ -103,4 +101,4 @@ Update the IP address of the newly created instance and the SSH key for connecti
 + ```cd ansible/deploy_dataservice && ansible-playbook -i ../inventory deploy.yml``` to deploy data pipeline on cloud.
 + ```cd ansible/deploy_monitoring && ansible-playbook -i ../inventory deploy.yml``` to deploy monitoring tools on cloud.
 + You can see all data service and monitoring service on GCP 
-![](imgs/gcp2.png) 
+![](imgs/gcp3.png) 

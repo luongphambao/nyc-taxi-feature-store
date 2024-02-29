@@ -27,8 +27,8 @@
         state: latest
         update_cache: true
     
-    # - name: map python3 to python
-    #   command: ln -s /usr/bin/python3 /usr/bin/python
+    - name: map python3 to python
+      command: ln -s /usr/bin/python3 /usr/bin/python
 
     - name: Add Docker GPG apt Key
       apt_key:
@@ -67,7 +67,7 @@
       become: yes
     - name: Copy jars to server
       synchronize:
-        src: ../../../jars
+        src: ../../jars
         dest: /home/luongphambao
         recursive: yes
         archive: yes
@@ -76,17 +76,17 @@
       become: yes
     - name: Copy source to server
       copy:
-        src: ../../../src
+        src: ../../src
         dest: /home/luongphambao
         mode: preserve
     - name: Copy batch processing scripts to server
       copy:
-        src: ../../../pyspark
+        src: ../../pyspark
         dest: /home/luongphambao
         mode: preserve
     - name: Copy scripts for streamming processing to server
       copy:
-        src: ../../../stream_processing/scripts
+        src: ../../stream_processing/scripts
         dest: /home/luongphambao
         mode: preserve
     - name: Copy docker compose file to server
@@ -103,7 +103,7 @@
     
     - name: Copy .env file to server
       copy:
-        src: ../../../.env
+        src: ../../.env
         dest: /home/luongphambao
         mode: preserve
     - name: Copy requirements file to server
@@ -118,7 +118,7 @@
     
     - name: Copy airflow folder to server
       synchronize:
-        src: ../../../airflow
+        src: ../../airflow
         dest: /home/luongphambao
         recursive: yes
         archive: yes
@@ -144,6 +144,3 @@
     - name: Install requirements
       pip:
         requirements: /home/luongphambao/requirements.txt
-        state: present
-        executable: /usr/bin/python3
-      become: yes
