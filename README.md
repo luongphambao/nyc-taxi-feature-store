@@ -35,9 +35,9 @@
 + Docker engine
 ## How to guide 
 
-You can use list command in `Makefile` to run service
++ You can use list command in `Makefile` to run service
 
-For example: Run all service by command ```make run_all```
++ For example: Run all service by command ```make run_all```
  ### Monitoring 
  You can run monitoring service by commands 
  ``` bash
@@ -53,9 +53,9 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
 ### Data Validation
  You can see `data-validation/README.MD` for details guide (setup,srcipts,...)
 ### Data Transformation DBT
-  You can see `dbt_nyc/README.MD` for details guide (setup,srcipts,...)  
+ You can see `dbt_nyc/README.MD` for details guide (setup,srcipts,...)  
 ### Airflow
-  You can see `airflow/README.MD` for details guide (setup,srcipts,...)
+ You can see `airflow/README.MD` for details guide (setup,srcipts,...)
 ### Streamming Processing
  You can see `stream_processing/README.MD` for details guide (setup,srcipts,...)
 ### Batch processing
