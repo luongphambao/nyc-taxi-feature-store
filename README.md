@@ -8,7 +8,7 @@
 ![](imgs/final1.png)
 
 
-## Note:
+## Folder Structure
 + **stream_processing** folder: contain streaming data source and streaming processing service (kafka for data source and flink for processing)
 + **jars** folder: contain used jars file for data pipeline (Pyspark)
 + **airflow** folder: contain airflow dag,configuration,and deployment
@@ -57,12 +57,12 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
 ### Airflow
   You can see `airflow/README.MD` for details guide (setup,srcipts,...)
 ### Streamming Processing
-+ You can see `stream_processing/README.MD` for details guide (setup,srcipts,...)
+ You can see `stream_processing/README.MD` for details guide (setup,srcipts,...)
 ### Batch processing
 
-+Pyspark helps efficiently handle big data, speeding up data reading and writing, and processing much faster as data grows.
++ Pyspark helps efficiently handle big data, speeding up data reading and writing, and processing much faster as data grows.
 
-+In this problem, we leverage Pyspark to transform and store data into a data warehouse, as well as quickly validate data.
++ In this problem, we leverage Pyspark to transform and store data into a data warehouse, as well as quickly validate data.
 #### How to guide
 
 + ``` python pyspark/batch_processing.py  #loading data from PostgreSQL```  
