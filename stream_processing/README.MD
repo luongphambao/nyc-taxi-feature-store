@@ -29,7 +29,7 @@ docker image tag nyc_producer:latest ${name}/nyc_producer:latest
 docker push ${name}/nyc_producer:latest #name is your docker hub name
 ```
 ### Streaming processing
-+ To handle this streaming datasource, Pyflink is a good option to do this task
++ To handle this streaming datasource, Pyflink or Kafka can be used, but in this project, we use Pyflink to process the data
 #### How to guide
 + ```cd stream_processing/scripts```
 + ```python datastream_api.py && python window_datastream_api.py```
@@ -38,4 +38,4 @@ docker push ${name}/nyc_producer:latest #name is your docker hub name
 ![](../imgs/kafka1.png)
         + **nyc_taxi.sink.datastream** and **nyc_taxi.sink_window.datastream** is the defined sink and window sink in my case
 + ```python kafka_consumer.py```
-    + Messages from the sink and window sink will be stored and used for analysis in the future
+    + Messages from topic  will be stored and used for further processing(analyse, visualize,cost prediction,...)
