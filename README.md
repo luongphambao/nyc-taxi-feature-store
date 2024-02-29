@@ -40,14 +40,14 @@ You can use list command in `Makefile` to run service
 For example: Run all service by command
 
  ```make run_all```
- ### Moniotring 
+ ### Monitoring 
  Access at http://localhost:3000/ to for Grafana for tracking resource usage 
   ![](imgs/grafana.png)
 Access at http://localhost:5601/ to for Kibana for tracking logs
   ![](imgs/kibana.png)
 ### Datalake-Minio
  You can see `datalake/README.MD` for details guide (setup,srcipts,...)
-### Data Vaiidation
+### Data Validation
  You can see `data-validation/README.MD` for details guide (setup,srcipts,...)
 ### Data Transformation DBT
   You can see `dbt_nyc/README.MD` for details guide (setup,srcipts,...)  
@@ -82,13 +82,13 @@ cd infra/ansible
 ansible-playbook create_compute_instance.yaml
 ```
 
-![](gifs/create_compute_instance.gif)
+![](imgs/create_compute_instance.gif)
 
 Go to Settings, select [Metadata](https://console.cloud.google.com/compute/metadata) and add your SSH key.
 
 Update the IP address of the newly created instance and the SSH key for connecting to the Compute Engine in the inventory file.
 
-![](gifs/ssh_key_out.gif)
+![](imgs/ssh_key_out.gif)
 
 + ```cd ansible```
 + To initialize a compute engine, json key file of service account on google cloud is located at **secrets folder**
