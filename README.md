@@ -67,6 +67,7 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
 #### How to guide
 
 + ``` python pyspark/batch_processing.py  #loading data from PostgreSQL```  
++ ``` python pyspark/spark_warehouse      #write data from parquet to warehouse```
 + ``` python pyspark/spark_warehouse      #write data from datalake to warehouse```
 + ``` python pyspark/validation.py        #validation data ```
 ![](imgs/monitoring_architecture.png)
