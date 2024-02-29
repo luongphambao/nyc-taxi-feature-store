@@ -39,6 +39,11 @@ You can use list command in `Makefile` to run service
 
 For example: Run all service by command ```make run_all```
  ### Monitoring 
+ You can run monitoring service by commands 
+ ``` bash
+ make monitoring_up
+ make elk_up
+ ```
  Access at http://localhost:3000/ to for Grafana for tracking resource usage 
   ![](imgs/grafana.png)
 Access at http://localhost:5601/ to for Kibana for tracking logs
