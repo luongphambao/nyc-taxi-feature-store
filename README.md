@@ -73,7 +73,7 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
 
  
 ## Deploy data pipeline on Google Compute Engine
-### Spin up your instance
+### Create your instance
 Create your [service account](https://console.cloud.google.com/), and select [Compute Admin](https://cloud.google.com/compute/docs/access/iam#compute.admin) role (Full control of all Compute Engine resources) for your service account.  
 Create new key as json type for your service account. Download this json file and save it in `ansible/secrets` directory. Update your `project` and `service_account_file` in `ansible/create_compute_instance.yaml`.
 
