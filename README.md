@@ -37,9 +37,7 @@
 
 You can use list command in `Makefile` to run service
 
-For example: Run all service by command
-
- ```make run_all```
+For example: Run all service by command ```make run_all```
  ### Monitoring 
  Access at http://localhost:3000/ to for Grafana for tracking resource usage 
   ![](imgs/grafana.png)
