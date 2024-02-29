@@ -2,7 +2,7 @@
 
 ## Description 
 
-+ In this repository, we develop and deploy a feature store system using trip records from the Yellow and Green taxi fleets of the NYC Taxi and Limousine Commission (TLC). Various services are employed to cater to the specific requirements of each stream. Pyspark, PostgreSQL, Flink, Kafka, DBT, and Airflow are among the prominent services utilized for these purposes. Additionally, monitoring tools such as Prometheus and Grafana are integrated to ensure effective performance monitoring.
++ In this repository, we develop and deploy a feature store system serving trip records from the Yellow and Green taxi fleets of the NYC Taxi and Limousine Commission (TLC). Various services are employed to meet the specific requirements of each stream. Pyspark, PostgreSQL, Flink, Kafka, DBT, and Airflow are among the prominent services utilized for these purposes. Additionally, monitoring tools such as Prometheus and Grafana are integrated to ensure effective performance monitoring.
 
 ## Overall data architecture
 
