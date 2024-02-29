@@ -77,7 +77,6 @@ Create your [service account](https://console.cloud.google.com/), and select [Co
 
 Create new key as json type for your service account. Download this json file and save it in `ansible/secrets` directory. Update your `project` and `service_account_file` in `ansible/create_compute_instance.yaml`.
 
-
 Go back to your terminal, please execute the following commands to create the Compute Engine instance:
 + ```cd ansible```
 + ```ansible-playbook create_compute_instance.yaml``` to create virtual machine instance using ansible. Configuration of machine was defined in file create_compute_instance.yaml
