@@ -14,7 +14,7 @@
 + **airflow** folder: contain airflow dag,configuration,and deployment
 + **utils** folder: helper funtions
 + **pyspark** folder: contain scripts for batch processing
-+ **infra** folder: contain ansible playbook for deploying data pipeline, monitoring tools, and airflow on Google Compute Engine
++ **ansible** folder: contain ansible playbook for deploying data pipeline, monitoring tools, and airflow on Google Compute Engine
 + **monitoring** folder: contain configuration for monitoring tools (Prometheus, Grafana)
 + **data** folder: contain data raw and streaming data
 + **data-validation** folder: contain great_expectations for data validation
@@ -62,9 +62,9 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
 +In this problem, we leverage Pyspark to transform and store data into a data warehouse, as well as quickly validate data.
 #### How to guide
 
-+ ```python pyspark/batch_processing.py``` 
-+ ```python pyspark/spark_insert.py```
-+ ```python pyspark/validation.py```
++ ``` python pyspark/batch_processing.py  #loading data from PostgreSQL```  
++ ``` python pyspark/spark_warehouse      #write data from datalake to warehouse```
++ ``` python pyspark/validation.py        #validation data ```
 ![](imgs/monitoring_architecture.png)
 
  
@@ -72,13 +72,13 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
 ### Spin up your instance
 Create your [service account](https://console.cloud.google.com/), and select [Compute Admin](https://cloud.google.com/compute/docs/access/iam#compute.admin) role (Full control of all Compute Engine resources) for your service account.
 
-Create new key as json type for your service account. Download this json file and save it in `infra/ansible/secrets` directory. Update your `project` and `service_account_file` in `infra/ansible/create_compute_instance.yaml`.
+Create new key as json type for your service account. Download this json file and save it in `ansible/secrets` directory. Update your `project` and `service_account_file` in `ansible/create_compute_instance.yaml`.
 
 ![](gifs/create_svc_acc_out.gif)
 
 Go back to your terminal, please execute the following commands to create the Compute Engine instance:
 ```bash
-cd infra/ansible
+cd ansible
 ansible-playbook create_compute_instance.yaml
 ```
 
@@ -97,7 +97,7 @@ Update the IP address of the newly created instance and the SSH key for connecti
     + Virtual machine is ready to run
     + Before moving to next step, subtitute **External IP** of created compute engine to **inventory file** in **ansible folder**
 ![](imgs/gcp1.png) 
-+ ```cd infra/ansible/deploy_dataservice &&ansible-playbook -i ../inventory deploy.yml``` to deploy data pipeline on cloud.
-+ ```cd infra/ansible/deploy_monitoring &&ansible-playbook -i ../inventory deploy.yml``` to deploy monitoring tools on cloud.
-+ You can see all dataservice run in GCP :))
++ ```cd ansible/deploy_dataservice && ansible-playbook -i ../inventory deploy.yml``` to deploy data pipeline on cloud.
++ ```cd ansible/deploy_monitoring && ansible-playbook -i ../inventory deploy.yml``` to deploy monitoring tools on cloud.
++ You can see all data service and monitoring service on GCP 
 ![](imgs/gcp2.png) 
