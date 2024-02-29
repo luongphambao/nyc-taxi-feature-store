@@ -89,3 +89,5 @@ Go back to your terminal, please execute the following commands to create the Co
 + ```cd ansible/deploy_monitoring && ansible-playbook -i ../inventory deploy.yml``` to deploy monitoring tools on cloud.
 + You can see all data service and monitoring service on GCP 
 ![](imgs/gcp3.png) 
+## Acknowledgements
+I am grateful to my mentor, Quan Dang, for his steadfast support and guidance throughout the duration of this project. His expertise and insights have been invaluable in helping me navigate the complexities of this project. 
