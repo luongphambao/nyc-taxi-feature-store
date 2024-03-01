@@ -3,15 +3,12 @@ import io
 import json
 from datetime import datetime
 from time import sleep
-import pandas as pd
+
 import numpy as np
+import pandas as pd
 from bson import json_util
 from kafka import KafkaAdminClient, KafkaProducer
 from kafka.admin import NewTopic
-
-
-
-
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -67,8 +64,8 @@ def create_streams(servers, schemas_path):
             )
             sleep(10)
             pass
-    df=pd.read_parquet("streamming_data.parquet")
-    #print(df.head())
+    df = pd.read_parquet("streamming_data.parquet")
+    # print(df.head())
     while True:
         record = {}
         # Make event one more year recent to simulate fresher data
@@ -79,18 +76,18 @@ def create_streams(servers, schemas_path):
         schema_path = f"{schemas_path}/schema_{record['nyc_taxi_id']}.avsc"
         with open(schema_path, "r") as f:
             parsed_schema = json.loads(f.read())
-        value_sample=df.sample(1).values[0]
-        #print(value_sample)
-        index_feature=0
+        value_sample = df.sample(1).values[0]
+        # print(value_sample)
+        index_feature = 0
         for field in parsed_schema["fields"]:
-            
-            #select value from random row
-            #value=df[field["name"]].sample(1).values[0]
+
+            # select value from random row
+            # value=df[field["name"]].sample(1).values[0]
 
             if field["name"] not in ["created", "nyc_taxi_id"]:
                 record[field["name"]] = value_sample[index_feature]
-                index_feature+=1
-        #print(record)
+                index_feature += 1
+        # print(record)
         # Get topic name for this nyc_taxi
         topic_name = f'nyc_taxi_{record["nyc_taxi_id"]}'
 

@@ -1,6 +1,6 @@
 import os
-from postgresql_client import PostgresSQLClient
 
+from postgresql_client import PostgresSQLClient
 
 
 def main():
@@ -11,15 +11,10 @@ def main():
     #     password=os.getenv("POSTGRES_PASSWORD"),
     # )
     pc = PostgresSQLClient(
-        database="k6",
-        user="k6",
-        password="k6",
-        port="5432",
-        host="172.17.0.1"
-
+        database="k6", user="k6", password="k6", port="5432", host="172.17.0.1"
     )
     # Create devices table
-    
+
     create_table_query = """
         CREATE TABLE IF NOT EXISTS nyc_taxi (
             created TIMESTAMP WITHOUT TIME ZONE,

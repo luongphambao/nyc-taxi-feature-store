@@ -6,11 +6,15 @@ from pyflink.common.serialization import SimpleStringSchema
 from pyflink.common.typeinfo import Types
 from pyflink.datastream import StreamExecutionEnvironment
 from pyflink.datastream.connectors.kafka import (
-    KafkaOffsetsInitializer, KafkaRecordSerializationSchema, KafkaSink,
-    KafkaSource)
+    KafkaOffsetsInitializer,
+    KafkaRecordSerializationSchema,
+    KafkaSink,
+    KafkaSource,
+)
 
 JARS_PATH = f"{os.getcwd()}/jars/"
 print(JARS_PATH)
+
 
 def merge_features(record):
     """
@@ -24,7 +28,7 @@ def merge_features(record):
     # and create a data column for this
     data = {}
     for key in record:
-        if key!="created" and key!="content":
+        if key != "created" and key != "content":
             data[key] = record[key]
 
     # Convert the data column to string
@@ -36,6 +40,7 @@ def merge_features(record):
         }
     )
 
+
 def print_features(record):
     """
     Merged feature columns into one single data column
@@ -44,7 +49,7 @@ def print_features(record):
     # Convert Row to dict
     record = json.loads(record)
     data = record["payload"]["after"]
-    #print(data)
+    # print(data)
     return json.dumps(data)
 
 
@@ -61,6 +66,7 @@ def check_record_keys(record):
     print("record: ", list(record.keys()))
     return True
 
+
 def filter_features(record):
     """
     Remove unnecessary columns
@@ -72,6 +78,8 @@ def filter_features(record):
             data[key] = record[key]
 
     return json.dumps({"created": record["created"], "data": data})
+
+
 def main():
     env = StreamExecutionEnvironment.get_execution_environment()
 

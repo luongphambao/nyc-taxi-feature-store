@@ -1,22 +1,12 @@
 import os
+import time
 import dotenv
-
-from pyspark.sql import SparkSession
-
+from pydeequ.analyzers import AnalysisRunner, AnalyzerContext, Completeness, Size
 from pydeequ.checks import *
-from pydeequ.verification import *
-
-from pydeequ.suggestions import *
-
 from pydeequ.profiles import ColumnProfilerRunner
-from pydeequ.analyzers import (
-    AnalysisRunner,
-    AnalyzerContext,
-    Size,
-    Completeness,
-)
-import time 
-
+from pydeequ.suggestions import *
+from pydeequ.verification import *
+from pyspark.sql import SparkSession
 dotenv.load_dotenv(".env")
 
 
@@ -32,7 +22,7 @@ def main():
         # .config("spark.executor.memory", "70g")
         # .config("spark.driver.memory", "50g")
         # .config("spark./  -6memory.offHeap.enabled",True)
-        # .config("spark.memory.offHeap.size","16g") 
+        # .config("spark.memory.offHeap.size","16g")
         .appName("Python Spark SQL basic example")
         .getOrCreate()
     )
@@ -44,9 +34,11 @@ def main():
         spark.read.format("jdbc")
         .option("driver", "io.trino.jdbc.TrinoDriver")
         .option("url", f"jdbc:trino://localhost:{os.getenv('TRINO_PORT')}/")
-        .option("dbtable", os.getenv("TRINO_DBTABLE","datalake.taxi_time_series.nyc_taxi"))
+        .option(
+            "dbtable", os.getenv("TRINO_DBTABLE", "datalake.taxi_time_series.nyc_taxi")
+        )
         .option("user", os.getenv("TRINO_USER"))
-        .option("password", os.getenv("TRINO_PASSWORD",""))
+        .option("password", os.getenv("TRINO_PASSWORD", ""))
         .load()
     )
     print("Connect to Trino database and read data successfully!")
@@ -54,12 +46,10 @@ def main():
     columns = df.columns
     print(columns)
     print("Time taken to read data from Trino: ", time.time() - start_time)
-    #exit()
     # Profile data with Deequ
     # https://aws.amazon.com/blogs/big-data/test-data-quality-at-scale-with-deequ/
     # https://pydeequ.readthedocs.io/en/latest/README.html
-    #get 100000 rows
-    df = df.limit(4000000)
+    # df = df.limit(4000000)
     profile_result = ColumnProfilerRunner(spark).onData(df).run()
 
     # Give information on completeness, min, max, mean, and sum, .etc.
@@ -86,24 +76,23 @@ def main():
     )
     analysisResult_df.show()
 
-    # Ok, after analyzing the data, we want to verify the properties 
+    # Ok, after analyzing the data, we want to verify the properties
     # we have collected also applied to a new dataset
-    check = Check(spark, CheckLevel.Error, "Review Check") # Another level is Error
+    check = Check(spark, CheckLevel.Error, "Review Check")  # Another level is Error
 
-    checkResult = VerificationSuite(spark) \
-        .onData(df) \
-        .addCheck(
-            check.isComplete("passenger_count")  \
-            .isNonNegative("passenger_count")) \
-        .addCheck(
-            check.isComplete("trip_distance")  \
-            .isNonNegative("trip_distance")) \
+    checkResult = (
+        VerificationSuite(spark)
+        .onData(df)
+        .addCheck(check.isComplete("passenger_count").isNonNegative("passenger_count"))
+        .addCheck(check.isComplete("trip_distance").isNonNegative("trip_distance"))
         .run()
+    )
 
     checkResult_df = VerificationResult.checkResultsAsDataFrame(spark, checkResult)
-    csv_result=checkResult_df.show()
+    csv_result = checkResult_df.show()
     print("Time taken to check data: ", time.time() - start_time)
-    csv_result=checkResult_df.toPandas().to_csv("checkResult_df.csv")
+    csv_result = checkResult_df.toPandas().to_csv("checkResult_df.csv")
+
 
 if __name__ == "__main__":
     main()

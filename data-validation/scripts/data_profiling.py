@@ -1,20 +1,13 @@
 import os
+
 import dotenv
-
-from pyspark.sql import SparkSession
-
+from pydeequ.analyzers import AnalysisRunner, AnalyzerContext, Completeness, Size
 from pydeequ.checks import *
+from pydeequ.profiles import ColumnProfilerRunner
+from pydeequ.suggestions import *
 from pydeequ.verification import *
 
-from pydeequ.suggestions import *
-
-from pydeequ.profiles import ColumnProfilerRunner
-from pydeequ.analyzers import (
-    AnalysisRunner,
-    AnalyzerContext,
-    Size,
-    Completeness,
-)
+from pyspark.sql import SparkSession
 
 dotenv.load_dotenv(".env")
 
@@ -71,19 +64,20 @@ def main():
     )
     analysisResult_df.show()
 
-    # Ok, after analyzing the data, we want to verify the properties 
+    # Ok, after analyzing the data, we want to verify the properties
     # we have collected also applied to a new dataset
-    check = Check(spark, CheckLevel.Error, "Review Check") # Another level is Error
+    check = Check(spark, CheckLevel.Error, "Review Check")  # Another level is Error
 
-    checkResult = VerificationSuite(spark) \
-        .onData(df) \
-        .addCheck(
-            check.isComplete("velocity")  \
-            .isNonNegative("velocity")) \
+    checkResult = (
+        VerificationSuite(spark)
+        .onData(df)
+        .addCheck(check.isComplete("velocity").isNonNegative("velocity"))
         .run()
+    )
 
     checkResult_df = VerificationResult.checkResultsAsDataFrame(spark, checkResult)
     checkResult_df.show()
+
 
 if __name__ == "__main__":
     main()

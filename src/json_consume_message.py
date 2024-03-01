@@ -1,14 +1,18 @@
-from confluent_kafka import Consumer, KafkaException
 import json
 
-def main():
-    consumer = Consumer({
-        'bootstrap.servers': 'localhost:9092',
-        'group.id': 'mygroup',
-        'auto.offset.reset': 'latest' # try latest to get the recent value
-    })
+from confluent_kafka import Consumer, KafkaException
 
-    consumer.subscribe(['nyc_taxi_0'])
+
+def main():
+    consumer = Consumer(
+        {
+            "bootstrap.servers": "localhost:9092",
+            "group.id": "mygroup",
+            "auto.offset.reset": "latest",  # try latest to get the recent value
+        }
+    )
+
+    consumer.subscribe(["nyc_taxi_0"])
 
     # Read messages from Kafka
     try:
@@ -22,18 +26,19 @@ def main():
                 raise KafkaException(msg.error())
             else:
                 # Parse data from our message
-                value=json.loads(msg.value().decode('utf-8'))
-                #print(value)
+                value = json.loads(msg.value().decode("utf-8"))
+                # print(value)
                 # value = json.loads(
                 #     msg.value().decode('utf-8')
                 # )["payload"]["after"]
                 print(f"Received message: {value}")
     except KeyboardInterrupt:
-        print('Aborted by user!\n')
+        print("Aborted by user!\n")
 
     finally:
         # Close consumer
         consumer.close()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

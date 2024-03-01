@@ -1,25 +1,17 @@
 import os
-
 from dotenv import load_dotenv
 from postgresql_client import PostgresSQLClient
-
-load_dotenv("/home/luongphambao/module2/MLE2/.env")
+load_dotenv(".env")
 
 
 def main():
-    # pc = PostgresSQLClient(
-    #     database=os.getenv("POSTGRES_DB"),
-    #     user=os.getenv("POSTGRES_USER"),
-    #     password=os.getenv("POSTGRES_PASSWORD"),
-    # )
     pc = PostgresSQLClient(
-        database="k6",
-        user="k6",
-        password="k6",
+        database=os.getenv("POSTGRES_DB"),
+        user=os.getenv("POSTGRES_USER"),
+        password=os.getenv("POSTGRES_PASSWORD"),
     )
-    #print("error")
-    # Create devices table
-    
+le
+
     create_table_query = """
         CREATE TABLE IF NOT EXISTS nyc_taxi (
             vendorid  INT, 

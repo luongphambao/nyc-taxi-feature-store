@@ -1,7 +1,9 @@
 import os
-import pandas as pd
 from glob import glob
+
+import pandas as pd
 from dotenv import load_dotenv
+
 from postgresql_client import PostgresSQLClient
 
 load_dotenv()
