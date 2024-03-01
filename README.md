@@ -6,7 +6,7 @@
 
 ## Overall data architecture
 
-![](imgs/architecture.png)
+![](imgs/architecture1.png)
 
 
 ## Folder Structure

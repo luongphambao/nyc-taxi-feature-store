@@ -2,7 +2,7 @@ FROM python:3.8-slim
 
 # Copy app handler code
 
-COPY kafka_producer/produce_json.py produce.py
+COPY kafka_producer/produce.py produce.py
 COPY kafka_producer/generate_schemas.py generate_schemas.py
 COPY kafka_producer/streamming_data.parquet streamming_data.parquet
 COPY run.sh .
