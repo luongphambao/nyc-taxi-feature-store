@@ -77,7 +77,7 @@
     
     - name: Copy monitoring docker compose file to server
       copy:
-        src: prom-graf-docker-compose.yaml
+        src: ../../monitoring/prom-graf-docker-compose.yaml
         dest: /home/luongphambao
         mode: preserve
 

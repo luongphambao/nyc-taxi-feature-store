@@ -23,10 +23,6 @@ def main():
             else:
                 # Parse data from our message
                 value=json.loads(msg.value().decode('utf-8'))
-                #print(value)
-                # value = json.loads(
-                #     msg.value().decode('utf-8')
-                # )["payload"]["after"]
                 print(f"Received message: {value}")
     except KeyboardInterrupt:
         print('Aborted by user!\n')
