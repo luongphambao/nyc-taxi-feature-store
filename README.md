@@ -51,14 +51,15 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
   ![](imgs/kibana.png)
 ### Datalake-Minio
  You can see `datalake/README.MD` for details guide (setup,srcipts,...)
-### Data Validation
- You can see `data-validation/README.MD` for details guide (setup,srcipts,...)
 ### Data Transformation DBT
  You can see `dbt_nyc/README.MD` for details guide (setup,srcipts,...)  
 ### Airflow
  You can see `airflow/README.MD` for details guide (setup,srcipts,...)
 ### Streamming Processing
  You can see `stream_processing/README.MD` for details guide (setup,srcipts,...)
+### Data Validation
+ You can see in `notebooks/full_flow.ipynb` and `notebooks/reload_and_validate.ipynb`
+ ![](imgs/validation.png)
 ### Batch processing
 
 + Pyspark helps efficiently handle big data, speeding up data reading and writing, and processing much faster as data grows.
@@ -67,8 +68,8 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
 #### How to guide
 
 + ``` python pyspark/batch_processing.py  #loading data from PostgreSQL```  
-+ ``` python pyspark/spark_warehouse.py      #write data from parquet to warehouse```
-+ ``` python pyspark/spark_warehouse2.py      #write data from datalake to warehouse```
++ ``` python pyspark/parquet2warehouse.py      #write data from parquet to warehouse```
++ ``` python pyspark/datalake2warehouse.py      #write data from datalake to warehouse```
 + ``` python pyspark/validation.py        #validation data ```
 ![](imgs/monitoring_architecture.png)
 

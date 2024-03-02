@@ -10,8 +10,6 @@ def main():
         user=os.getenv("POSTGRES_USER"),
         password=os.getenv("POSTGRES_PASSWORD"),
     )
-le
-
     create_table_query = """
         CREATE TABLE IF NOT EXISTS nyc_taxi (
             vendorid  INT, 

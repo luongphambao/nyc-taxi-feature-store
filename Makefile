@@ -6,7 +6,7 @@ datalake_restart:
 	docker compose -f datalake/minio_docker-compose.yml down
 	docker compose -f datalake/minio_docker-compose.yml up -d
 airflow_up:
-	docker compose -f airflow-docker-compose.yaml up -d
+	docker compose -f airflow/airflow-docker-compose.yaml up -d
 kafka_up:
 	docker compose -f stream_processing/kafka/docker-compose.yml up -d
 kafka_down:
