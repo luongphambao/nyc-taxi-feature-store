@@ -58,8 +58,20 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
 ### Streamming Processing
  You can see `stream_processing/README.MD` for details guide (setup,srcipts,...)
 ### Data Validation
- You can see in `notebooks/full_flow.ipynb` and `notebooks/reload_and_validate.ipynb`
- ![](imgs/validation.png)
+**Great Expectations**:
+
+You can find examples of data validation using Great Expectations in the `notebooks` folder `full_flow.ipynb` and `reload_and_validate.ipynb`.
+
+Great Expectations is a Python-based library that allows you to define, manage, and validate expectations about data in your data pipelines and projects.
+
+![](imgs/validation.png)
+**Deequ**:
+
+You can explore data validation using Deequ in the file `pyspark/validation.py`.
+
+Deequ is a library primarily built for Spark that enables data validation and quality checks within Spark data processing pipelines.
+
+ ![](imgs/deequ.png)
 ### Batch processing
 
 + Pyspark helps efficiently handle big data, speeding up data reading and writing, and processing much faster as data grows.
