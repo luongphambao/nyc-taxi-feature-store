@@ -58,14 +58,14 @@ Access at http://localhost:5601/ to for Kibana for tracking logs
 ### Streamming Processing
  You can see `stream_processing/README.MD` for details guide (setup,srcipts,...)
 ### Data Validation
-**Great Expectations**:
+  **Great Expectations**:
 
 You can find examples of data validation using Great Expectations in the `notebooks` folder `full_flow.ipynb` and `reload_and_validate.ipynb`.
 
 Great Expectations is a Python-based library that allows you to define, manage, and validate expectations about data in your data pipelines and projects.
 
 ![](imgs/validation.png)
-**Deequ**:
+  **Deequ**:
 
 You can explore data validation using Deequ in the file `pyspark/validation.py`.
 

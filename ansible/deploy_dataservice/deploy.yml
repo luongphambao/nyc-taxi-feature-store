@@ -59,7 +59,7 @@
     - name: Copy trino config to server
       synchronize:
         src: trino
-        dest: /home/luongphambao
+        dest: /home/luongphambao #destination for gcp (change for your service, example :/home/abcdxyz)
         recursive: yes
         archive: yes
         delete: yes
@@ -91,13 +91,13 @@
         mode: preserve
     - name: Copy docker compose file to server
       copy:
-        src: docker-compose.yml
+        src: ../../docker-compose.yml
         dest: /home/luongphambao
         mode: preserve
 
     - name: Copy airflow docker compose file to server
       copy:
-        src: airflow-docker-compose.yaml
+        src: ../../airflow/airflow-docker-compose.yaml
         dest: /home/luongphambao
         mode: preserve
     
