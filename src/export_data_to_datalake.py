@@ -1,9 +1,10 @@
+import os
+from glob import glob
 from minio import Minio
 from helpers import load_cfg
-from glob import glob
-import os
 
-CFG_FILE = './utils/datalake.yaml'
+CFG_FILE = "./utils/datalake.yaml"
+
 
 def main():
     cfg = load_cfg(CFG_FILE)
@@ -27,23 +28,16 @@ def main():
         print(f'Bucket {datalake_cfg["bucket_name"]} already exists, skip creating!')
 
     # Upload files.
-    all_fps = glob(
-        os.path.join(
-            nyc_data_cfg["folder_path"],
-            "*.parquet"
-        )
-    )
+    all_fps = glob(os.path.join(nyc_data_cfg["folder_path"], "*.parquet"))
 
     for fp in all_fps:
         print(f"Uploading {fp}")
         client.fput_object(
             bucket_name=datalake_cfg["bucket_name"],
-            object_name=os.path.join(
-                datalake_cfg["folder_name"],
-                os.path.basename(fp)
-            ),
-            file_path=fp
+            object_name=os.path.join(datalake_cfg["folder_name"], os.path.basename(fp)),
+            file_path=fp,
         )
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

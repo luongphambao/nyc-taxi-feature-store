@@ -1,26 +1,22 @@
 import os
-
+from dotenv import load_dotenv
 from postgresql_client import PostgresSQLClient
+load_dotenv(".env")
 
 
 def main():
-    print(os.getenv("POSTGRES_DB"))
-    # pc = PostgresSQLClient(
-    #     database=os.getenv("POSTGRES_DB"),
-    #     user=os.getenv("POSTGRES_USER"),
-    #     password=os.getenv("POSTGRES_PASSWORD"),
-    # )
     pc = PostgresSQLClient(
-        database="k6", user="k6", password="k6", port="5432", host="172.17.0.1"
+        database=os.getenv("POSTGRES_DB"),
+        user=os.getenv("POSTGRES_USER"),
+        password=os.getenv("POSTGRES_PASSWORD"),
     )
-    # Create devices table
+le
 
     create_table_query = """
         CREATE TABLE IF NOT EXISTS nyc_taxi (
-            created TIMESTAMP WITHOUT TIME ZONE,
             vendorid  INT, 
-            pickup_datetime TIMESTAMP WITHOUT TIME ZONE, 
-            dropoff_datetime TIMESTAMP WITHOUT TIME ZONE, 
+            tpep_pickup_datetime TIMESTAMP WITHOUT TIME ZONE, 
+            tpep_dropoff_datetime TIMESTAMP WITHOUT TIME ZONE, 
             passenger_count FLOAT, 
             trip_distance FLOAT, 
             ratecodeid FLOAT, 
@@ -36,7 +32,7 @@ def main():
             improvement_surcharge FLOAT, 
             total_amount FLOAT, 
             congestion_surcharge FLOAT,
-            content VARCHAR(30)
+            airport_fee FLOAT
         );
     """
     try:
