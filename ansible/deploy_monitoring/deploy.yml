@@ -58,7 +58,7 @@
 
     - name: Copy prometheus config to server
       synchronize:
-        src: prometheus
+        src: ../../monitoring/prometheus
         dest: /home/luongphambao
         recursive: yes
         archive: yes
@@ -67,7 +67,7 @@
       become: yes
     - name: Copy grafana config to server
       synchronize:
-        src: grafana
+        src: ../../monitoring/grafana
         dest: /home/luongphambao
         recursive: yes
         archive: yes
