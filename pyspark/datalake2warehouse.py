@@ -1,4 +1,5 @@
 # Same code as spark_warehouse.py but load data from datalake( using s3)
+#you must download aws-java-sdk-bundle-1.12.262.jar before running this code
 import argparse
 import os
 from glob import glob
