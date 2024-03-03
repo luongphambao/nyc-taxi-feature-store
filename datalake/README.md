@@ -2,7 +2,7 @@
 
 + MinIO is a datalake service
 + We can access MinIO console at port 9001 with user `minio_access_key` and password `minio_secret_key`
-
++ You can use command ```make run_data``` to run datalake
 ## Manual interaction
 + First, Select to **Buckets** and   choose **Create Bucket**
 ![](../imgs/minio1.png)
