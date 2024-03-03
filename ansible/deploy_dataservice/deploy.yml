@@ -97,7 +97,7 @@
 
     - name: Copy airflow docker compose file to server
       copy:
-        src: ../../airflow/airflow-docker-compose.yaml
+        src: ../../airflow-docker-compose.yaml
         dest: /home/luongphambao
         mode: preserve
     
