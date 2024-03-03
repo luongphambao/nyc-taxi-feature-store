@@ -8,8 +8,8 @@ Note: using commnad `sudo chmod 777 -R data` if error happen :))
 ### DAGs
 ```shell
 .
-├── data1.py: dag for download data from link and transform data 
-├── data2.py: dag using Great Expectations to validate data and insert data into data warehouse
+├── nyc_pipeline.py: dag for NYC taxi data pipeline  ( download data, transform data,preprocess data)
+├── data2warehouse.py: dag using Great Expectations to validate data and insert data into data warehouse
 ```
 ### Guide
 + To run Airflow, you can you following command ```make airflow up``` to run Airflow service( you can run ```make warehouse_up``` to start DB)
